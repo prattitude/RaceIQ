@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameidRouteImport } from './routes/$gameid'
+import { Route as AcRouteImport } from './routes/ac'
 import { Route as AcEvoRouteImport } from './routes/ac-evo'
 import { Route as AccRouteImport } from './routes/acc'
 import { Route as DevRouteImport } from './routes/dev'
@@ -29,6 +30,7 @@ import { Route as GameidSessionsRouteImport } from './routes/$gameid/sessions'
 import { Route as GameidTracksRouteImport } from './routes/$gameid/tracks'
 import { Route as AcEvoIndexRouteImport } from './routes/ac-evo/index'
 import { Route as AcEvoSetupsRouteImport } from './routes/ac-evo/setups'
+import { Route as AcIndexRouteImport } from './routes/ac/index'
 import { Route as AccIndexRouteImport } from './routes/acc/index'
 import { Route as AccSetupsRouteImport } from './routes/acc/setups'
 import { Route as F125IndexRouteImport } from './routes/f125/index'
@@ -76,6 +78,11 @@ const IndexRoute = IndexRouteImport.update({
 const GameidRoute = GameidRouteImport.update({
   id: '/$gameid',
   path: '/$gameid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcRoute = AcRouteImport.update({
+  id: '/ac',
+  path: '/ac',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcEvoRoute = AcEvoRouteImport.update({
@@ -167,6 +174,11 @@ const AcEvoSetupsRoute = AcEvoSetupsRouteImport.update({
   id: '/setups',
   path: '/setups',
   getParentRoute: () => AcEvoRoute,
+} as any)
+const AcIndexRoute = AcIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcRoute,
 } as any)
 const AccIndexRoute = AccIndexRouteImport.update({
   id: '/',
@@ -368,6 +380,7 @@ const GameidSessionsSessionIdReplayLapIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$gameid': typeof GameidRouteWithChildren
+  '/ac': typeof AcRouteWithChildren
   '/ac-evo': typeof AcEvoRouteWithChildren
   '/acc': typeof AccRouteWithChildren
   '/dev': typeof DevRoute
@@ -393,6 +406,7 @@ export interface FileRoutesByFullPath {
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
   '/ac-evo/': typeof AcEvoIndexRoute
+  '/ac/': typeof AcIndexRoute
   '/acc/': typeof AccIndexRoute
   '/f125/': typeof F125IndexRoute
   '/fm23/': typeof Fm23IndexRoute
@@ -439,6 +453,7 @@ export interface FileRoutesByTo {
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
   '/ac-evo': typeof AcEvoIndexRoute
+  '/ac': typeof AcIndexRoute
   '/acc': typeof AccIndexRoute
   '/f125': typeof F125IndexRoute
   '/fm23': typeof Fm23IndexRoute
@@ -475,6 +490,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$gameid': typeof GameidRouteWithChildren
+  '/ac': typeof AcRouteWithChildren
   '/ac-evo': typeof AcEvoRouteWithChildren
   '/acc': typeof AccRouteWithChildren
   '/dev': typeof DevRoute
@@ -500,6 +516,7 @@ export interface FileRoutesById {
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
   '/ac-evo/': typeof AcEvoIndexRoute
+  '/ac/': typeof AcIndexRoute
   '/acc/': typeof AccIndexRoute
   '/f125/': typeof F125IndexRoute
   '/fm23/': typeof Fm23IndexRoute
@@ -537,6 +554,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$gameid'
+    | '/ac'
     | '/ac-evo'
     | '/acc'
     | '/dev'
@@ -562,6 +580,7 @@ export interface FileRouteTypes {
     | '/portable/combo-1'
     | '/portable/combo-2'
     | '/ac-evo/'
+    | '/ac/'
     | '/acc/'
     | '/f125/'
     | '/fm23/'
@@ -608,6 +627,7 @@ export interface FileRouteTypes {
     | '/portable/combo-1'
     | '/portable/combo-2'
     | '/ac-evo'
+    | '/ac'
     | '/acc'
     | '/f125'
     | '/fm23'
@@ -643,6 +663,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$gameid'
+    | '/ac'
     | '/ac-evo'
     | '/acc'
     | '/dev'
@@ -668,6 +689,7 @@ export interface FileRouteTypes {
     | '/portable/combo-1'
     | '/portable/combo-2'
     | '/ac-evo/'
+    | '/ac/'
     | '/acc/'
     | '/f125/'
     | '/fm23/'
@@ -704,6 +726,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GameidRoute: typeof GameidRouteWithChildren
+  AcRoute: typeof AcRouteWithChildren
   AcEvoRoute: typeof AcEvoRouteWithChildren
   AccRoute: typeof AccRouteWithChildren
   DevRoute: typeof DevRoute
@@ -731,6 +754,13 @@ declare module '@tanstack/react-router' {
       path: '/$gameid'
       fullPath: '/$gameid'
       preLoaderRoute: typeof GameidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ac': {
+      id: '/ac'
+      path: '/ac'
+      fullPath: '/ac'
+      preLoaderRoute: typeof AcRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ac-evo': {
@@ -858,6 +888,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/ac-evo/setups'
       preLoaderRoute: typeof AcEvoSetupsRouteImport
       parentRoute: typeof AcEvoRoute
+    }
+    '/ac/': {
+      id: '/ac/'
+      path: '/'
+      fullPath: '/ac/'
+      preLoaderRoute: typeof AcIndexRouteImport
+      parentRoute: typeof AcRoute
     }
     '/acc/': {
       id: '/acc/'
@@ -1204,6 +1241,16 @@ const GameidRouteChildren: GameidRouteChildren = {
 const GameidRouteWithChildren =
   GameidRoute._addFileChildren(GameidRouteChildren)
 
+interface AcRouteChildren {
+  AcIndexRoute: typeof AcIndexRoute
+}
+
+const AcRouteChildren: AcRouteChildren = {
+  AcIndexRoute: AcIndexRoute,
+}
+
+const AcRouteWithChildren = AcRoute._addFileChildren(AcRouteChildren)
+
 interface AcEvoSetupsRouteChildren {
   AcEvoSetupsImportRoute: typeof AcEvoSetupsImportRoute
   AcEvoSetupsNewRoute: typeof AcEvoSetupsNewRoute
@@ -1368,6 +1415,7 @@ const LmuRouteWithChildren = LmuRoute._addFileChildren(LmuRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GameidRoute: GameidRouteWithChildren,
+  AcRoute: AcRouteWithChildren,
   AcEvoRoute: AcEvoRouteWithChildren,
   AccRoute: AccRouteWithChildren,
   DevRoute: DevRoute,
