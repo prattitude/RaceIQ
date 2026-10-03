@@ -4,6 +4,7 @@ One-off scripts for inspecting captured telemetry and validating game-specific f
 
 ## Domains
 
+- `ac/` — original Assetto Corsa shared-memory capture.
 - `acc/` — ACC binary frame diagnostics and parsed lap checks.
 - `ac-evo/` — AC Evo physics, status, and shared-memory diagnostics.
 - `recordings/` — cross-game recording inspection, replay, compression, and lap-offset checks.
