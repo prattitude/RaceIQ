@@ -27,6 +27,7 @@
 - Align AC Evo setup inputs regardless of units, use compact controls without native number spinners, fill the available editor width, and arrange wheel sections side by side on desktop and stacked on mobile.
 - Use searchable car, track, and category selectors in ACC and AC Evo setup forms.
 - Use the application background instead of gray fill for shared text and numeric inputs.
+- Stop counting a session that starts in the garage as a pit stop, so the first timed lap after leaving the pits is no longer marked as an outlap.
 
 ### Internal
 - Add an original Assetto Corsa (`ac`) adapter over AC v1.7 shared memory, with a bundled Kunos track catalog, discovered-car identity, ACCTEST dump import, telemetry catalog column, and a real-capture replay fixture.

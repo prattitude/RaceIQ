@@ -1,5 +1,5 @@
 import type { LapIndexPacket } from "../../lap-detection/types";
-import { GRAPHICS, PHYSICS, STATIC } from "./structs";
+import { GRAPHICS, PHYSICS, SESSION_TYPE_NAMES, STATIC } from "./structs";
 import { resolveAcIdentity } from "./parser";
 
 /** Direct detector projection for packed AC frames. No TelemetryPacket allocation. */
@@ -40,6 +40,7 @@ export function parseAcLapIndex(physics: Buffer, graphics: Buffer, stat: Buffer,
     WheelOnRumbleStripRL: 0,
     WheelOnRumbleStripRR: 0,
     acc: {
+      sessionType: SESSION_TYPE_NAMES[i(GRAPHICS.session.offset)] ?? "unknown",
       pitStatus: i(GRAPHICS.isInPit.offset) ? "in_pit" : i(GRAPHICS.isInPitLane.offset) ? "pit_lane" : "out",
       currentSectorIndex: i(GRAPHICS.currentSectorIndex.offset),
       lastSectorTime: i(GRAPHICS.lastSectorTime.offset),

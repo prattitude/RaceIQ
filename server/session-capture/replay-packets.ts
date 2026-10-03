@@ -103,7 +103,14 @@ function readAccPackets(recordingPath: string): RecordedTelemetry {
 function readAcPackets(recordingPath: string): RecordedTelemetry {
   const frames = readKunosFrames(recordingPath);
   if (frames.length === 0) {
-    return { packets: readFramedPackets("ac", recordingPath), carModel: null, trackName: null };
+    const packets = readFramedPackets("ac", recordingPath);
+    const carModel = packets.find((packet) => packet.carModelName)?.carModelName ?? null;
+    const trackOrdinal = packets.find((packet) => packet.TrackOrdinal != null && packet.TrackOrdinal >= 0)?.TrackOrdinal;
+    return {
+      packets,
+      carModel,
+      trackName: trackOrdinal == null ? null : getAcTrackName(trackOrdinal) ?? null,
+    };
   }
 
   let carModel: string | null = null;

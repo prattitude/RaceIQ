@@ -66,6 +66,20 @@ describe("race result source extraction", () => {
     expect(result.pitEvents?.[0]?.service).toBe("unknown");
     expect(result.tyreStrategy).toBe("dry");
   });
+  test("does not count a session that starts in the pits as a pit stop", () => {
+    const frame = (gameId: "acc" | "ac", pitStatus: string, LapNumber: number) =>
+      packet({ gameId, LapNumber, acc: { pitStatus } as never });
+    for (const gameId of ["acc", "ac"] as const) {
+      const result = deriveRaceResult(extractRaceSource(gameId, [
+        frame(gameId, "in_pit", 1), frame(gameId, "pit_lane", 1), frame(gameId, "out", 1),
+        frame(gameId, "out", 2), frame(gameId, "out", 3),
+        frame(gameId, "pit_lane", 3), frame(gameId, "in_pit", 3),
+      ]));
+      expect(result.pitCount).toBe(1);
+      expect(result.events.filter((event) => (event.eventType ?? "pit") === "pit").map((event) => event.lapNumber)).toEqual([3]);
+    }
+  });
+
   test("derives DNF and retired classifications from F1 result status", () => {
     const dnf = extractRaceSource("f1-2025", [
       packet({ gameId: "f1-2025", f1: { sessionType: "race", resultStatus: 4 } as never }),

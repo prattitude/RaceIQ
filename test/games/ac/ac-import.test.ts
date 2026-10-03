@@ -50,7 +50,7 @@ describe("AC capture import", () => {
     ]);
 
     const row = await db.select().from(sessions).where(eq(sessions.id, imported.laps[0]!.sessionId)).get();
-    expect(row).toMatchObject({ gameId: "ac", trackOrdinal: 2 });
+    expect(row).toMatchObject({ gameId: "ac", trackOrdinal: 2, sessionType: "practice" });
     expect(row!.carOrdinal).toBeGreaterThanOrEqual(100000);
     expect(getAcCarName(row!.carOrdinal)).toBe("KTM Xbow R");
   }, 60_000);

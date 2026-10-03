@@ -42,7 +42,8 @@ function pitSource(gameId: GameId, packet: TelemetryPacket): Record<string, unkn
 export class RaceSourceAccumulator {
   private packetCount = 0;
   private pitSignals: PitServiceSignals[] | undefined;
-  private inPit = false;
+  /** Null until the first pit-state sample, so a garage start is not counted as a stop. */
+  private inPit: boolean | null = null;
   private sessionType: string | null = null;
   private livePosition: number | null = null;
   private finalPosition: number | null = null;
@@ -74,7 +75,7 @@ export class RaceSourceAccumulator {
     const inPit = pitStatus(this.gameId, packet);
     if (inPit !== null) {
       this.pitSignals ??= [];
-      if (inPit && !this.inPit) {
+      if (inPit && this.inPit === false) {
         this.pitSignals.push({
           sequence: index + 1,
           lapNumber: packet.LapNumber, elapsedSeconds: packet.CurrentRaceTime,
@@ -149,7 +150,7 @@ export class RaceSourceAccumulator {
     } else if (packet.acc?.acEvo?.sessionType && packet.acc.acEvo.sessionType !== "unknown") {
       this.sessionType = packet.acc.acEvo.sessionType;
     }
-    if (this.gameId === "acc" && packet.acc?.sessionType && packet.acc.sessionType !== "unknown") {
+    if ((this.gameId === "acc" || this.gameId === "ac") && packet.acc?.sessionType && packet.acc.sessionType !== "unknown") {
       this.sessionType = packet.acc.sessionType;
     }
     if (this.gameId === "lmu" && packet.lmu?.sessionType && packet.lmu.sessionType !== "unknown") {
@@ -200,7 +201,7 @@ export class RaceSourceAccumulator {
     const provenance = createRaceResultProvenance(this.gameId, {
       extractor: SOURCE_EXTRACTOR,
       fields: {
-        sessionType: fieldStatus.sessionType === "direct" ? (f1 ? "f1.sessionType" : this.gameId === "lmu" ? "lmu.sessionType" : this.gameId === "acc" ? "acc.sessionType" : "acc.acEvo.sessionType") : null,
+        sessionType: fieldStatus.sessionType === "direct" ? (f1 ? "f1.sessionType" : this.gameId === "lmu" ? "lmu.sessionType" : this.gameId === "acc" || this.gameId === "ac" ? "acc.sessionType" : "acc.acEvo.sessionType") : null,
         classification: classification == null ? null : `f1.resultStatus:${classificationSource ?? "unknown"}`,
         finishingPosition: finishingPosition == null ? null : `TelemetryPacket.RacePosition:${this.finalPosition != null ? "final-classification" : f1 ? "lap-data" : "continuous"}`,
         qualifyingPosition: qualifyingPosition == null ? null : `f1.gridPosition:${this.finalGridPosition != null ? "final-classification" : "lap-data"}`,
