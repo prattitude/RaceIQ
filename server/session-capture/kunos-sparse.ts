@@ -1,4 +1,4 @@
-import { ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
+import { AC_PACKED_MAGIC, ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
 
 // KNSD v1: [magic(4)][checkpoint back-distance(4)][frame length(4)]
 // [changed 64-byte block bitmap][changed blocks]. A full packed triplet is checkpoint.
@@ -9,7 +9,7 @@ const MAX_FRAME_BYTES = 1024 * 1024;
 export function kunosSourceMagic(frame: Buffer): number {
   if (frame.length < 24) return 0;
   const magic = frame.readUInt32LE(0);
-  if (magic !== ACC_PACKED_MAGIC && magic !== ACEVO_PACKED_MAGIC) return 0;
+  if (magic !== ACC_PACKED_MAGIC && magic !== ACEVO_PACKED_MAGIC && magic !== AC_PACKED_MAGIC) return 0;
   const physicsEnd = 16 + frame.readUInt32LE(12);
   if (physicsEnd + 8 > frame.length) return 0;
   const graphicsEnd = physicsEnd + 4 + frame.readUInt32LE(physicsEnd);

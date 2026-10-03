@@ -14,6 +14,7 @@ const GAME_META: Record<GameId, { label: string; tag: string }> = {
   "f1-2025": { label: "F1 2025", tag: "F1 25" },
   acc: { label: "Assetto Corsa Competizione", tag: "ACC" },
   "ac-evo": { label: "Assetto Corsa EVO", tag: "AC EVO" },
+  ac: { label: "Assetto Corsa", tag: "AC" },
   iracing: { label: "iRacing", tag: "iRacing" },
   lmu: { label: "Le Mans Ultimate", tag: "LMU" },
 };

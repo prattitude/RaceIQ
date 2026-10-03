@@ -10,6 +10,8 @@ import {
   createAcEvoParserCache,
   parseAcEvoBuffers,
 } from "../games/ac-evo/parser";
+import { parseAcBuffers, resolveAcIdentity } from "../games/ac/parser";
+import { getAcTrackName } from "../../shared/racing/tracks/catalogs/ac";
 import { readIRacingFrames } from "../games/iracing/recorder";
 import { hasLMUDumpMagic, readLMUFramesFromBuffer } from "../games/lmu/recorder";
 import { readKunosFrames } from "../games/kunos/frame-reader";
@@ -92,6 +94,27 @@ function readAccPackets(recordingPath: string): RecordedTelemetry {
     const packet = parseAccBuffers(frame.physics, frame.graphics, frame.staticData, {
       carOrdinal,
       trackOrdinal,
+    });
+    if (packet) packets.push(packet);
+  }
+  return { packets, carModel, trackName };
+}
+
+function readAcPackets(recordingPath: string): RecordedTelemetry {
+  const frames = readKunosFrames(recordingPath);
+  if (frames.length === 0) {
+    return { packets: readFramedPackets("ac", recordingPath), carModel: null, trackName: null };
+  }
+
+  let carModel: string | null = null;
+  let trackName: string | null = null;
+  const packets: TelemetryPacket[] = [];
+  for (const frame of frames) {
+    const identity = resolveAcIdentity(frame.staticData);
+    if (!carModel && identity.carModel) carModel = identity.carModel;
+    if (!trackName && identity.trackOrdinal >= 0) trackName = getAcTrackName(identity.trackOrdinal);
+    const packet = parseAcBuffers(frame.physics, frame.graphics, frame.staticData, {
+      trackOrdinal: identity.trackOrdinal,
     });
     if (packet) packets.push(packet);
   }
@@ -182,6 +205,7 @@ export function readRecordedTelemetry(
 ): RecordedTelemetry {
   if (gameId === "acc") return readAccPackets(recordingPath);
   if (gameId === "ac-evo") return readAcEvoPackets(recordingPath);
+  if (gameId === "ac") return readAcPackets(recordingPath);
   if (gameId === "iracing") return readIRacingPackets(recordingPath);
   if (gameId === "lmu") return readLMUPackets(recordingPath);
   return {

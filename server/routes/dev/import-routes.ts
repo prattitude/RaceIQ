@@ -21,10 +21,13 @@ import { decodeLMUSourceFrame } from "../../games/lmu/source-frame";
 import { identityFromLMUSourceFrame } from "../../games/lmu/normalizer";
 import { getAllServerGames } from "../../games/registry";
 import {
+  AC_PACKED_MAGIC,
   ACC_PACKED_MAGIC,
   ACEVO_PACKED_MAGIC,
   packTriplet,
 } from "../../games/kunos/pack-triplet";
+import { parseAcBuffers, resolveAcIdentity } from "../../games/ac/parser";
+import { getAcTrackName } from "../../../shared/racing/tracks/catalogs/ac";
 import { LiveTelemetryPipeline } from "../../telemetry/live-pipeline";
 import { NullWsAdapter, NullSessionRecorderAdapter } from "../../telemetry/pipeline-ports";
 import { detectGameIdFromFilename } from "../../session-capture/import-capture";
@@ -152,6 +155,32 @@ importRoutes.post("/api/dev/import-dump", async (c) => {
         if (!packet) continue;
         const sourceFrame = packTriplet(
           ACEVO_PACKED_MAGIC,
+          packet.CarOrdinal,
+          packet.TrackOrdinal ?? -1,
+          frame.physics,
+          frame.graphics,
+          frame.staticData
+        );
+        await pipeline.processPacket(packet, sourceFrame);
+        packetCount++;
+      }
+    } else if (gameId === "ac") {
+      let frames: { physics: Buffer; graphics: Buffer; staticData: Buffer }[];
+      try {
+        frames = readKunosFrames(tmpPath);
+      } catch (e) {
+        return c.json({ error: "Failed to read AC frames", details: String(e) }, 400);
+      }
+      for (const frame of frames) {
+        const identity = resolveAcIdentity(frame.staticData);
+        if (!carModel && identity.carModel) carModel = identity.carModel;
+        if (!trackName && identity.trackOrdinal >= 0) trackName = getAcTrackName(identity.trackOrdinal);
+        const packet = parseAcBuffers(frame.physics, frame.graphics, frame.staticData, {
+          trackOrdinal: identity.trackOrdinal,
+        });
+        if (!packet) continue;
+        const sourceFrame = packTriplet(
+          AC_PACKED_MAGIC,
           packet.CarOrdinal,
           packet.TrackOrdinal ?? -1,
           frame.physics,

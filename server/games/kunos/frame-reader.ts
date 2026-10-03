@@ -6,6 +6,12 @@ const HEADER_SIZE = 16; // magic (8) + version (4) + frameCount (4)
 const FRAME_HEADER = 5; // type (1) + size (4)
 const SUPPORTED_VERSIONS = new Set([2, 3]);
 
+export interface KunosFrame {
+  physics: Buffer;
+  graphics: Buffer;
+  staticData: Buffer;
+}
+
 /**
  * Read assembled triplets from a Kunos recording (.bin or .bin.gz).
  * Supports legacy ACCTEST format versions 2 and 3. Frames are self-describing,
@@ -15,14 +21,23 @@ const SUPPORTED_VERSIONS = new Set([2, 3]);
  * Parser must length-guard reads of tail-of-struct fields.
  * @param limit Maximum number of triplets to return (default: all)
  */
-export function readKunosFrames(filePath: string, limit?: number): { physics: Buffer; graphics: Buffer; staticData: Buffer }[] {
+export function readKunosFrames(filePath: string, limit?: number): KunosFrame[] {
   const raw = readFileSync(filePath);
   const data = filePath.endsWith(".gz") ? gunzipSync(raw) : raw;
+  return readKunosFramesFromBuffer(data, limit, filePath);
+}
 
-  if (data.length < HEADER_SIZE || !data.subarray(0, 8).equals(ACC_MAGIC)) return [];
+/** True when an (already decompressed) buffer starts with the ACCTEST dump header. */
+export function hasKunosDumpMagic(data: Buffer): boolean {
+  return data.length >= HEADER_SIZE && data.subarray(0, 8).equals(ACC_MAGIC);
+}
+
+/** Read assembled triplets from an already decompressed Kunos recording. */
+export function readKunosFramesFromBuffer(data: Buffer, limit?: number, label = "buffer"): KunosFrame[] {
+  if (!hasKunosDumpMagic(data)) return [];
   const version = data.readUInt32LE(8);
   if (!SUPPORTED_VERSIONS.has(version)) {
-    console.warn(`[ACC frame-reader] Unsupported recording version ${version} in ${filePath}`);
+    console.warn(`[ACC frame-reader] Unsupported recording version ${version} in ${label}`);
     return [];
   }
 
@@ -36,10 +51,10 @@ export function readKunosFrames(filePath: string, limit?: number): { physics: Bu
   // frames are deduplicated (only written when the bytes change). A triplet is
   // therefore flushed when the NEXT poll's physics frame arrives (or at EOF),
   // carrying the last-seen static forward across polls that skipped it.
-  const frames: { physics: Buffer; graphics: Buffer; staticData: Buffer }[] = [];
+  const frames: KunosFrame[] = [];
   let pendingPhysics: Buffer | null = null;
   let pendingGraphics: Buffer | null = null;
-  let lastStatic = Buffer.alloc(0);
+  let lastStatic: Buffer = Buffer.alloc(0);
   let offset = HEADER_SIZE;
   let frameIdx = 0;
 

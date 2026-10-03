@@ -1,5 +1,5 @@
 import { LMU_SOURCE_FRAME_MAGIC, LMU_SOURCE_FRAME_V2_SIZE } from "../games/lmu/source-frame";
-import { ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
+import { AC_PACKED_MAGIC, ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
 import type { GameId } from "../../shared/games/ids";
 import { encodeKunosSparseFrame } from "./kunos-sparse";
 import { encodeLmuSparseFrame } from "./lmu-sparse";
@@ -28,8 +28,8 @@ export class SparseCaptureEncoder {
     // Imported compact v1 frames and unrelated source formats stay legacy raw.
     const isLmuV2 = this.gameId === "lmu" && frame.length === LMU_SOURCE_FRAME_V2_SIZE &&
       frame.subarray(0, LMU_SOURCE_FRAME_MAGIC.length).equals(LMU_SOURCE_FRAME_MAGIC);
-    const kunosMagic = this.gameId === "acc" ? ACC_PACKED_MAGIC : ACEVO_PACKED_MAGIC;
-    const isKunos = (this.gameId === "acc" || this.gameId === "ac-evo") &&
+    const kunosMagic = this.gameId === "acc" ? ACC_PACKED_MAGIC : this.gameId === "ac" ? AC_PACKED_MAGIC : ACEVO_PACKED_MAGIC;
+    const isKunos = (this.gameId === "acc" || this.gameId === "ac-evo" || this.gameId === "ac") &&
       frame.length >= 20 && frame.readUInt32LE(0) === kunosMagic;
     const generic = this.gameId === "fm-2023" || this.gameId === "f1-2025" || this.gameId === "iracing"
       ? genericFrameIdentity(frame) : null;

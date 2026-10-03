@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { initGameAdapters } from "../../shared/games/init";
 import { serverReleaseFeatures } from "./config/release-features";
 import { injectDiscoveredAcEvoCars } from "../../shared/racing/cars/ac-evo";
+import { injectDiscoveredAcCars } from "../../shared/racing/cars/ac";
 import { injectDiscoveredIRacingIdentity } from "../../shared/games/iracing";
 import { injectDiscoveredLMUIdentity } from "../../shared/games/lmu";
 import app from "../routes/index";
@@ -73,6 +74,7 @@ export async function bootServer(options: BootOptions = {}): Promise<RunningServ
   await initDb();
   await reconcileDiscoveredCars();
   injectDiscoveredAcEvoCars(await listDiscoveredCars("ac-evo"));
+  injectDiscoveredAcCars(await listDiscoveredCars("ac"));
 
   const [iracingCars, iracingTracks] = await Promise.all([
     listDiscoveredCars("iracing"),

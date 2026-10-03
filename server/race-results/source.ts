@@ -1,5 +1,6 @@
 import type { RaceResultClaimEvidence, RaceResultEvidence, RaceResultSourceStatus } from "../../shared/racing/results/types";
 import type { GameId } from "../../shared/games/ids";
+import { isKunosGameId } from "../../shared/games/kunos";
 import type { TelemetryPacket } from "../../shared/telemetry/types";
 import { derivePitLedger, type PitServiceSignals } from "./pit-ledger";
 import type { PitEvent, RaceSourceObservation, ResultClassification } from "./types";
@@ -24,7 +25,7 @@ function positive(value: number | undefined): number | null {
 }
 
 function pitStatus(gameId: GameId, packet: TelemetryPacket): boolean | null {
-  if (gameId === "acc" || gameId === "ac-evo") return (packet.acc?.pitStatus ?? "out") !== "out";
+  if (isKunosGameId(gameId)) return (packet.acc?.pitStatus ?? "out") !== "out";
   if (gameId === "f1-2025") return packet.f1?.pitLaneTimerActive === 1;
   if (gameId === "iracing") return packet.iracing?.onPitRoad === true;
   if (gameId === "lmu") return packet.lmu?.inPits === true;
@@ -32,7 +33,7 @@ function pitStatus(gameId: GameId, packet: TelemetryPacket): boolean | null {
 }
 
 function pitSource(gameId: GameId, packet: TelemetryPacket): Record<string, unknown> {
-  if (gameId === "acc" || gameId === "ac-evo") return { channel: "acc.pitStatus", value: packet.acc?.pitStatus ?? "out" };
+  if (isKunosGameId(gameId)) return { channel: "acc.pitStatus", value: packet.acc?.pitStatus ?? "out" };
   if (gameId === "f1-2025") return { channel: "f1.pitLaneTimerActive", value: 1 };
   if (gameId === "iracing") return { channel: "iracing.onPitRoad", value: true };
   return { channel: "lmu.inPits", value: true };

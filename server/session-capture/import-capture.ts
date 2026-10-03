@@ -2,6 +2,8 @@ import { KNOWN_GAME_IDS, type GameId } from "../../shared/games/ids";
 import { getAllServerGames } from "../games/registry";
 import { hasLMUDumpMagic, readLMUFramesFromBuffer } from "../games/lmu/recorder";
 import { IRACING_DUMP_MAGIC, readIRacingFramesFromBuffer } from "../games/iracing/recorder";
+import { hasKunosDumpMagic } from "../games/kunos/frame-reader";
+import { acSourceFramesFromDump } from "../games/ac/dump-frames";
 import {
   decompressIfGzipSync,
   iterateSessionFrames,
@@ -61,7 +63,9 @@ export async function importSessionBin(
   const frames = gameId === "lmu" && hasLMUDumpMagic(buf)
     ? readLMUFramesFromBuffer(buf)
     : gameId === "iracing" && buf.subarray(0, IRACING_DUMP_MAGIC.length).equals(IRACING_DUMP_MAGIC)
-      ? readIRacingFramesFromBuffer(buf) : canonicalImportFrames(buf);
+      ? readIRacingFramesFromBuffer(buf)
+      : gameId === "ac" && hasKunosDumpMagic(buf)
+        ? acSourceFramesFromDump(buf) : canonicalImportFrames(buf);
   const { packetCount, laps } = await importSessionFrames(
     frames,
     gameId,

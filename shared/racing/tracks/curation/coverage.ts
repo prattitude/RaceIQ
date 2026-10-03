@@ -24,6 +24,7 @@ const GAME_LABELS: Record<GameId, string> = {
   "f1-2025": "F1 25 (f1-2025)",
   acc: "ACC (acc)",
   "ac-evo": "AC Evo (ac-evo)",
+  ac: "Assetto Corsa (ac)",
   iracing: "iRacing (iracing)",
   lmu: "Le Mans Ultimate (lmu)",
 };

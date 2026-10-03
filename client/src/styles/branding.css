@@ -114,6 +114,13 @@
   --brand-surface-end: var(--brand-game-acc-surface-end);
 }
 
+[data-game-brand="ac"] {
+  --brand-color: var(--brand-game-acc);
+  --brand-surface-start: var(--brand-game-acc-surface-start);
+  --brand-surface-mid: var(--brand-game-acc-surface-mid);
+  --brand-surface-end: var(--brand-game-acc-surface-end);
+}
+
 [data-game-brand="ac-evo"] {
   --brand-color: var(--brand-game-ac-evo);
   --brand-surface-start: var(--brand-game-ac-evo-surface-start);

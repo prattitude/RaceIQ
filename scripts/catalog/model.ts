@@ -22,6 +22,7 @@ const GAME_IDS = [
   "ac-evo",
   "iracing",
   "lmu",
+  "ac",
 ] as const;
 type GameId = (typeof GAME_IDS)[number];
 
@@ -304,6 +305,7 @@ const PARSER_FILES: Record<GameId, string> = {
   "ac-evo": "server/games/ac-evo/parser.ts",
   iracing: "server/games/iracing/normalizer.ts",
   lmu: "server/games/lmu/normalizer.ts",
+  ac: "server/games/ac/parser.ts",
 };
 export {
   IRACING_SESSION_INFO_SOURCE_FILES,

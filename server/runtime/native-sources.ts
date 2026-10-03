@@ -1,3 +1,4 @@
+import { AcSharedMemoryReader } from "../games/ac/shared-memory";
 import { AccSharedMemoryReader } from "../games/acc/shared-memory";
 import { AcEvoSharedMemoryReader } from "../games/ac-evo/shared-memory";
 import { IRacingTelemetrySource } from "../games/iracing/source";
@@ -7,10 +8,12 @@ import { isGameRunning } from "../games/registry";
 import {
   getAccReader,
   getAcEvoReader,
+  getAcReader,
   getIracingSource,
   getLmuSource,
   setAccReader,
   setAcEvoReader,
+  setAcReader,
   setIracingSource,
   setLmuSource,
 } from "./live-readers";
@@ -40,7 +43,7 @@ export function startNativeSourceSupervisor(
     );
   };
 
-  console.log("[Supervisor] Watching for native telemetry games (acc, ac-evo, iracing, lmu) — 2s poll");
+  console.log("[Supervisor] Watching for native telemetry games (acc, ac-evo, ac, iracing, lmu) — 2s poll");
   const pollTimer = setInterval(() => {
     trackStop(superviseSource(
       isGameRunning("acc"),
@@ -55,6 +58,14 @@ export function startNativeSourceSupervisor(
       () => new AcEvoSharedMemoryReader(recordingGameId === "ac-evo"),
       getAcEvoReader,
       setAcEvoReader,
+    ));
+    // Original AC shares the acpmf_* mapping names with ACC; never attach both.
+    trackStop(superviseSource(
+      isGameRunning("ac") && !isGameRunning("acc"),
+      "AC",
+      () => new AcSharedMemoryReader(recordingGameId === "ac"),
+      getAcReader,
+      setAcReader,
     ));
     trackStop(superviseSource(
       isGameRunning("iracing"),
@@ -83,11 +94,13 @@ export function startNativeSourceSupervisor(
       const readers = [
         getAccReader(),
         getAcEvoReader(),
+        getAcReader(),
         getIracingSource(),
         getLmuSource(),
       ];
       setAccReader(null);
       setAcEvoReader(null);
+      setAcReader(null);
       setIracingSource(null);
       setLmuSource(null);
       for (const reader of readers) {

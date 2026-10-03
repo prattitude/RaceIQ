@@ -7,8 +7,8 @@
 - Catalog version: `0.19.1`
 - Schema version: `v7`
 - Generator: `RaceIQ telemetry-catalog generator@0.19.1`
-- Generator source SHA-256: `8ccaf31d0d5ee0bd8870207f674222fc8c84894d73155e458f124328bfebdb40`
-- Content SHA-256: `b43d1b7122e046b21f1a1dc918d6fba004b2f6ab347fe926f23cc5237a03683b`
+- Generator source SHA-256: `3ac066a3f082198647e05ec076526fe32e80ea6235390b29b6b3389732e9a1eb`
+- Content SHA-256: `3c31b3a6db6df777cbdcaa002916e6f25911c9cf45ddf04fa9b9df8bdcef15b1`
 
 ## Coverage
 
@@ -16,10 +16,11 @@
 |---|---:|---:|---:|---:|---:|---:|---:|
 | fm-2023 | 96 | 96 | 95 | 1 | 0 | 0 | 0 |
 | f1-2025 | 289 | 289 | 119 | 170 | 0 | 0 | 0 |
-| acc | 205 | 172 | 124 | 48 | 0 | 0 | 33 |
-| ac-evo | 254 | 224 | 124 | 100 | 0 | 0 | 30 |
+| acc | 206 | 173 | 124 | 49 | 0 | 0 | 33 |
+| ac-evo | 255 | 225 | 124 | 101 | 0 | 0 | 30 |
 | iracing | 952 | 702 | 115 | 18 | 324 | 495 | 0 |
 | lmu | 172 | 172 | 126 | 46 | 0 | 0 | 0 |
+| ac | 173 | 173 | 124 | 49 | 0 | 0 | 0 |
 
 ## Semantic variables
 
@@ -103,6 +104,7 @@
 | `diagnostics.mem-soft-page-fault-sec` | Mem Soft Page Fault Sec | number | unit:unitless | unitless | scalar |  |  |  |
 | `diagnostics.migration` | Migration | number | dimensionless | ratio | scalar |  |  |  |
 | `diagnostics.number-of-sessions` | Number Of Sessions | number | dimensionless | count | scalar |  |  |  |
+| `diagnostics.number-of-tyres-out` | Number Of Tyres Out | number | dimensionless | count | scalar |  |  |  |
 | `diagnostics.pace-mode` | Pace Mode | number | unit:irsdk_pacemode | irsdk_PaceMode | scalar |  |  |  |
 | `diagnostics.push-to-pass` | Push To Pass | boolean | dimensionless | boolean | scalar |  |  |  |
 | `diagnostics.push-to-talk` | Push To Talk | boolean | dimensionless | boolean | scalar |  |  |  |

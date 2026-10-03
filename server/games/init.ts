@@ -6,6 +6,7 @@ import { accServerAdapter } from "./acc";
 import { acEvoServerAdapter } from "./ac-evo";
 import { iracingServerAdapter } from "./iracing";
 import { lmuServerAdapter } from "./lmu";
+import { acServerAdapter } from "./ac";
 import { releaseFeatureFlags, type ReleaseFeatureFlags } from "../../shared/platform/runtime/release-feature-flags";
 
 export function nativeTelemetryGameIds(
@@ -16,8 +17,8 @@ export function nativeTelemetryGameIds(
 ) {
   const gameIds = ["acc", "ac-evo"] as const;
   return flags.iracingAdapter
-    ? [...gameIds, "iracing", "lmu"] as const
-    : [...gameIds, "lmu"] as const;
+    ? [...gameIds, "iracing", "lmu", "ac"] as const
+    : [...gameIds, "lmu", "ac"] as const;
 }
 
 export function serverGameAdaptersForFeatures(
@@ -33,7 +34,7 @@ export function serverGameAdaptersForFeatures(
     acEvoServerAdapter,
   ];
   if (flags.iracingAdapter) adapters.push(iracingServerAdapter);
-  adapters.push(lmuServerAdapter);
+  adapters.push(lmuServerAdapter, acServerAdapter);
   return adapters;
 }
 

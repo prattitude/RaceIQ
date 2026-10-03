@@ -543,6 +543,72 @@ const UNAVAILABLE_EXTENSION_SOURCES: Partial<Record<GameId, Record<string, Unava
       description: "AC Evo v0.6 parser emits 0; native sector time is not populated.",
     },
   },
+  ac: {
+    "acc.brakePadCompound": {
+      reason: "source-not-provided",
+      description: "AC v1.7 shared memory has no brake-pad compound.",
+    },
+    "acc.brakePadWear": {
+      reason: "source-not-provided",
+      description: "AC v1.7 shared memory has no brake-pad wear; parser emits -1.",
+    },
+    "acc.tc": {
+      reason: "source-not-provided",
+      description: "AC v1.7 graphics has no TC setting index; physics tc level is exposed as acc.tcRaw.",
+    },
+    "acc.tcCut": {
+      reason: "source-not-provided",
+      description: "AC v1.7 has no TC cut setting.",
+    },
+    "acc.abs": {
+      reason: "source-not-provided",
+      description: "AC v1.7 graphics has no ABS setting index; physics abs level is exposed as acc.absRaw.",
+    },
+    "acc.engineMap": {
+      reason: "source-not-provided",
+      description: "AC v1.7 shared memory has no engine-map setting.",
+    },
+    "acc.tcIntervention": {
+      reason: "source-not-provided",
+      description: "AC v1.7 publishes aid levels, not TC intervention activity.",
+    },
+    "acc.absIntervention": {
+      reason: "source-not-provided",
+      description: "AC v1.7 publishes aid levels, not ABS intervention activity.",
+    },
+    "acc.slipVibrations": {
+      reason: "source-not-provided",
+      description: "AC v1.7 shared memory has no slip-vibration channel.",
+    },
+    "acc.absVibrations": {
+      reason: "source-not-provided",
+      description: "AC v1.7 shared memory has no ABS-vibration channel.",
+    },
+    "acc.rainIntensity": {
+      reason: "source-not-provided",
+      description: "Original AC has no rain simulation.",
+    },
+    "acc.trackGripStatus": {
+      reason: "source-not-provided",
+      description: "AC v1.7 publishes a surfaceGrip scalar, not ACC grip-status codes.",
+    },
+    "acc.penalty": {
+      reason: "source-not-provided",
+      description: "AC v1.7 does not expose ACC penalty enum codes.",
+    },
+    "acc.penaltyType": {
+      reason: "source-not-provided",
+      description: "AC v1.7 does not expose ACC penalty types.",
+    },
+    "acc.isValidLap": {
+      reason: "source-not-provided",
+      description: "AC v1.7 has no lap-validity flag; RaceIQ infers cuts from acc.numberOfTyresOut.",
+    },
+    "acc.fuelPerLap": {
+      reason: "source-not-provided",
+      description: "AC v1.7 has no fuel-per-lap estimate.",
+    },
+  },
 };
 
 function unavailableExtensionSource(gameId: GameId, path: string): UnavailableExtensionSource | undefined {

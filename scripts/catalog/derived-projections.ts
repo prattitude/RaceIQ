@@ -34,6 +34,12 @@ function addSectorDerivedVariables(
     "select sector containing current lap distance",
     "AC Evo sector fields are placeholders, so RaceIQ uses curated track boundaries.",
   );
+  currentIndex.games.ac = derivedLink(
+    "m",
+    ["TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
+    "select sector containing current lap distance",
+    "RaceIQ derives AC sector index from curated track boundaries.",
+  );
   currentIndex.games.iracing = derivedLink(
     "fraction",
     ["iracing.lapDistancePct", "iracing.sectorStarts"],
@@ -59,7 +65,7 @@ function addSectorDerivedVariables(
 
   const layoutStarts = variables.get("timing.sector.layout.start-fractions");
   if (layoutStarts) {
-    for (const gameId of ["fm-2023", "f1-2025", "acc", "ac-evo"] as const) {
+    for (const gameId of ["fm-2023", "f1-2025", "acc", "ac-evo", "ac"] as const) {
       layoutStarts.games[gameId] = derivedLink(
         "fraction",
         ["RaceIQ.Track.sectorStarts"],
@@ -103,6 +109,12 @@ function addSectorDerivedVariables(
         ["TelemetryPacket.CurrentLap", "TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
         "current lap time - time at curated sector boundary",
         "RaceIQ derives AC Evo sector timing from lap distance.",
+      ),
+      ac: derivedLink(
+        "s",
+        ["TelemetryPacket.CurrentLap", "TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
+        "current lap time - time at curated sector boundary",
+        "RaceIQ derives AC sector timing from lap distance.",
       ),
       iracing: derivedLink(
         "s",
@@ -191,6 +203,12 @@ function addSectorDerivedVariables(
         "accumulate elapsed time between curated sector boundaries",
         "RaceIQ assembles current AC Evo sector array.",
       ),
+      ac: derivedLink(
+        "s",
+        ["TelemetryPacket.CurrentLap", "TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
+        "accumulate elapsed time between curated sector boundaries",
+        "RaceIQ assembles current AC sector array.",
+      ),
       iracing: derivedLink(
         "s",
         ["TelemetryPacket.CurrentLap", "iracing.lapDistancePct", "iracing.sectorStarts"],
@@ -232,6 +250,12 @@ function addSectorDerivedVariables(
         ["LapMeta.sectorTimes", "TelemetryPacket.LastLap"],
         "persist curated-boundary timings and derive final sector from lap total",
         "RaceIQ stores completed AC Evo sector array.",
+      ),
+      ac: derivedLink(
+        "s",
+        ["LapMeta.sectorTimes", "TelemetryPacket.LastLap"],
+        "persist curated-boundary timings and derive final sector from lap total",
+        "RaceIQ stores completed AC sector array.",
       ),
       iracing: derivedLink(
         "s",
@@ -279,6 +303,12 @@ function addSectorDerivedVariables(
       "RaceIQ derives from curated boundary timing.",
     );
     lastCompleted.games["ac-evo"] = derivedLink(
+      "s",
+      ["LiveSectorData.currentTimes"],
+      "select most recently completed entry",
+      "RaceIQ derives from curated boundary timing.",
+    );
+    lastCompleted.games.ac = derivedLink(
       "s",
       ["LiveSectorData.currentTimes"],
       "select most recently completed entry",
@@ -411,6 +441,14 @@ function addCrossSourceProjections(
       normalization: "retain source compound name as common representation",
       description: "AC Evo common compound is projected from detailed source name.",
     };
+    compound.games.ac = {
+      kind: "simplified",
+      nativeUnit: "text",
+      sources: ["acc.tireCompound"],
+      freshness: "continuous",
+      normalization: "retain source compound name as common representation",
+      description: "AC common compound is projected from detailed source name.",
+    };
     compound.games.iracing = {
       kind: "simplified",
       nativeUnit: "id",
@@ -446,6 +484,13 @@ function addCrossSourceProjections(
       freshness: "continuous",
       description: "AC Evo normalized packet retains source fuel litres.",
     },
+    ac: {
+      kind: "direct",
+      nativeUnit: "L",
+      sources: ["TelemetryPacket.Fuel"],
+      freshness: "continuous",
+      description: "AC normalized packet retains source fuel litres.",
+    },
     iracing: {
       kind: "direct",
       nativeUnit: "L",
@@ -476,7 +521,7 @@ function addCrossSourceProjections(
       "fraction * 100",
       "RaceIQ converts F1 fuel fraction to percentage.",
     );
-    for (const gameId of ["acc", "ac-evo", "lmu"] as const) {
+    for (const gameId of ["acc", "ac-evo", "lmu", "ac"] as const) {
       fuelPercent.games[gameId] = derivedLink(
         "L",
         ["TelemetryPacket.Fuel", "TelemetryPacket.FuelCapacity"],

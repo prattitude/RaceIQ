@@ -87,6 +87,12 @@ export interface KunosExtendedData {
    * null = unavailable in source recording or not meaningful in pit state.
    */
   isValidLap: boolean | null;
+  /**
+   * Original AC physics numberOfTyresOut (offset 244): native count of tyres
+   * off the track surface, 0..4. AC publishes no lap-validity flag, so this
+   * is the only native track-limits evidence. Absent for ACC and AC Evo.
+   */
+  numberOfTyresOut?: number;
 
   // Fuel
   fuelPerLap: number;

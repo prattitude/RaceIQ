@@ -7,8 +7,10 @@
  * copied raw and untruncated up to a fixed cap; no field is interpreted beyond
  * the packet id, status, and identity strings used for progress logging.
  *
- * Waits for acs.exe, records while the session is live or paused, and
- * finalizes the capture when the game exits or on Ctrl+C.
+ * Each new physics frame is written with the latest graphics page so
+ * `readKunosFrames` assembles one triplet per physics update. Waits for
+ * acs.exe, records while the session is live or paused, and finalizes the
+ * capture when the game exits or on Ctrl+C.
  *
  * Usage: bun scripts/telemetry/ac/capture.ts [--out <dir>]
  */
@@ -79,6 +81,7 @@ let stopping = false;
 let pageTimer: ReturnType<typeof setInterval> | null = null;
 let staticTimer: ReturnType<typeof setInterval> | null = null;
 let lastStatus = -1;
+let latestGraphics: Buffer | null = null;
 let identity = "";
 let lastProgressAt = Date.now();
 let lastProgressCounts = { ...written };
@@ -177,28 +180,23 @@ function pollPages(): void {
   if (!graphics || !physics) return;
 
   const graphicsId = readPacketId(graphics);
-  let graphicsBuf: Buffer | null = null;
-  if (graphicsId !== lastPacketId.graphics) {
-    graphicsBuf = readPage(graphics);
+  if (graphicsId !== lastPacketId.graphics || !latestGraphics) {
+    latestGraphics = readPage(graphics);
     lastPacketId.graphics = graphicsId;
-    const status = graphicsBuf.readInt32LE(STATUS_OFFSET);
+    written.graphics++;
+    const status = latestGraphics.readInt32LE(STATUS_OFFSET);
     if (status !== lastStatus) {
       console.log(`[AC Capture] Status: ${STATUS_NAMES[status] ?? status}`);
       lastStatus = status;
     }
   }
 
-  const recording = lastStatus === STATUS_LIVE || lastStatus === STATUS_PAUSE;
-  if (graphicsBuf && recording) {
-    recorder.writeGraphics(graphicsBuf);
-    written.graphics++;
-  }
-
   const physicsId = readPacketId(physics);
   if (physicsId !== lastPacketId.physics) {
     lastPacketId.physics = physicsId;
-    if (recording) {
+    if (lastStatus === STATUS_LIVE || lastStatus === STATUS_PAUSE) {
       recorder.writePhysics(readPage(physics));
+      recorder.writeGraphics(latestGraphics);
       written.physics++;
     }
   }

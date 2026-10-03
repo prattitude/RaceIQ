@@ -1,6 +1,7 @@
 /**
  * Kunos lap validation rules shared by ACC and AC Evo detectors.
  */
+import { isKunosGameId } from "../../../shared/games/kunos";
 import type { TelemetryPacket } from "../../../shared/telemetry/types";
 
 /**
@@ -13,8 +14,7 @@ import type { TelemetryPacket } from "../../../shared/telemetry/types";
  * CurrentLap at 0 on each new session, so this heuristic is Kunos-only.
  */
 export function kunosFirstPacketIsMidLap(packet: TelemetryPacket): boolean {
-  const isKunos = packet.gameId === "acc" || packet.gameId === "ac-evo";
-  return isKunos && packet.CurrentLap > 5;
+  return isKunosGameId(packet.gameId) && packet.CurrentLap > 5;
 }
 
 

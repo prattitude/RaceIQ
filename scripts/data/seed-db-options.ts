@@ -11,6 +11,7 @@ export const FIXTURES: Record<GameId, string[]> = {
   "f1-2025": ["test/artifacts/sessions/f1-2025-2026-04-22T11-42-43-029Z.bin.gz"],
   acc: ["test/artifacts/sessions/acc-2026-04-23T16-42-16-158Z.bin.gz"],
   "ac-evo": ["test/artifacts/sessions/session-ac-evo-mid-2026-04-21T20-24-34-810Z.bin.gz"],
+  ac: ["test/artifacts/sessions/ac-2026-10-03T05-24-31-321Z.bin.gz"],
   iracing: ["test/artifacts/sessions/iracing-road-america-gt3.bin.gz"],
   lmu: [
     "test/artifacts/sessions/lmu-spa-iron-lynx-gte.bin.gz",

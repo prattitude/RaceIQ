@@ -24,7 +24,7 @@ export function GameBrandLogo({ gameId, className = "w-5 h-5" }: { gameId: strin
       />
     );
   }
-  const label = gameId === "iracing" ? "iR" : "ACE";
+  const label = gameId === "iracing" ? "iR" : gameId === "ac" ? "AC" : "ACE";
   return <span className="game-brand-accent text-xs font-black">{label}</span>;
 }
 
@@ -52,10 +52,13 @@ export function GameBrandHeader({ gameId, gameDisplayName }: { gameId: string; g
 
 type GameKey = keyof GameStats;
 
-const BRAND_CARDS: ReadonlyArray<{
+type BrandCardRoute =
+  | { route: "/fm23" | "/f125" | "/acc" | "/ac-evo" | "/iracing" | "/lmu"; params?: undefined }
+  | { route: "/$gameid"; params: { gameid: string } };
+
+const BRAND_CARDS: ReadonlyArray<BrandCardRoute & {
   key: GameKey;
   gameId: string;
-  route: "/fm23" | "/f125" | "/acc" | "/ac-evo" | "/iracing" | "/lmu";
   name: string;
   linePositions: [string, string, string];
 }> = [
@@ -65,16 +68,14 @@ const BRAND_CARDS: ReadonlyArray<{
   { key: "acEvo", gameId: "ac-evo", route: "/ac-evo", name: "Assetto Corsa Evo", linePositions: ["top-[20%]", "top-[50%]", "top-[75%]"] },
   { key: "iracing", gameId: "iracing", route: "/iracing", name: "iRacing", linePositions: ["top-[20%]", "top-[50%]", "top-[75%]"] },
   { key: "lmu", gameId: "lmu", route: "/lmu", name: "Le Mans Ultimate", linePositions: ["top-[20%]", "top-[50%]", "top-[75%]"] },
+  { key: "ac", gameId: "ac", route: "/$gameid", params: { gameid: "ac" }, name: "Assetto Corsa", linePositions: ["top-[20%]", "top-[50%]", "top-[75%]"] },
 ];
 
 function GameBrandCard({ game, stats }: { game: (typeof BRAND_CARDS)[number]; stats: GameStats[GameKey] }) {
   const [lineOne, lineTwo, lineThree] = game.linePositions;
-  return (
-    <Link
-      to={game.route}
-      data-game-brand={game.gameId}
-      className="game-brand-panel game-brand-card group relative overflow-hidden rounded-lg border p-5 transition-all duration-250 ease-out hover:scale-[1.02] @3xl/workspace:flex-1"
-    >
+  const className = "game-brand-panel game-brand-card group relative overflow-hidden rounded-lg border p-5 transition-all duration-250 ease-out hover:scale-[1.02] @3xl/workspace:flex-1";
+  const content = (
+    <>
       <div className="game-brand-glow absolute -top-8 -right-8 w-[120px] h-[120px] rounded-full transition-opacity duration-250 opacity-10 group-hover:opacity-20" />
       <div className="game-brand-bar absolute bottom-0 left-0 right-0 h-[1.5px] transition-opacity duration-250 opacity-50 group-hover:opacity-100" />
       <div className="absolute inset-0 overflow-hidden opacity-[0.06] pointer-events-none">
@@ -98,7 +99,12 @@ function GameBrandCard({ game, stats }: { game: (typeof BRAND_CARDS)[number]; st
           <div className="text-lg font-extrabold font-mono leading-none text-app-text/70">{stats.time}</div>
         </div>
       </div>
-    </Link>
+    </>
+  );
+  return game.route === "/$gameid" ? (
+    <Link to="/$gameid" params={game.params} data-game-brand={game.gameId} className={className}>{content}</Link>
+  ) : (
+    <Link to={game.route} data-game-brand={game.gameId} className={className}>{content}</Link>
   );
 }
 

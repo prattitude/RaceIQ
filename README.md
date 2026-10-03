@@ -50,7 +50,7 @@ Check out the [screenshots](assets/screenshots/) to see it in action.
 - **Track mapping and guides** — see your live position, map new tracks automatically, and use turn numbers, sectors, and track guides
 - **Race results** — review qualifying, podiums, fastest laps, pit stops, strategies, and position timelines
 - **Data portability** — import MoTeC logs and saved session captures; export individual laps or complete sessions
-- **Multi-game support** — use RaceIQ with Forza Motorsport 2023, F1 2025, Assetto Corsa Competizione, Assetto Corsa Evo, iRacing, and Le Mans Ultimate
+- **Multi-game support** — use RaceIQ with Forza Motorsport 2023, F1 2025, Assetto Corsa, Assetto Corsa Competizione, Assetto Corsa Evo, iRacing, and Le Mans Ultimate
 
 ## Supported Games
 
@@ -73,7 +73,7 @@ Grab the latest installer from the [releases page](https://github.com/SpeedHQ/Ra
 
 ### 2. Run and Connect
 
-For Forza and F1, configure the game's telemetry settings to send UDP data to `127.0.0.1:5301`. ACC, AC Evo, iRacing, and LMU are detected automatically from native Windows telemetry. For LMU, enable **Gameplay > Enable Plugins**. Start driving and telemetry will appear automatically. LMU `.duckdb` files from `UserData/Telemetry` can also be uploaded from Sessions.
+For Forza and F1, configure the game's telemetry settings to send UDP data to `127.0.0.1:5301`. Assetto Corsa, ACC, AC Evo, iRacing, and LMU are detected automatically from native Windows telemetry. For LMU, enable **Gameplay > Enable Plugins**. Start driving and telemetry will appear automatically. LMU `.duckdb` files from `UserData/Telemetry` can also be uploaded from Sessions.
 
 > **Already forwarding telemetry to a wheel base or other app?** Use [UDP Forwarder](https://github.com/SpeedHQ/udp-forwarder) to send telemetry to multiple destinations at once.
 
@@ -88,7 +88,7 @@ RaceIQ checks for new releases automatically and notifies you when one is availa
 **Game on Windows is recommended.** RaceIQ runs on the same PC as the game for two reasons:
 
 - **UDP reliability** — loopback delivery is lossless and low-latency, avoiding the packet loss and timing jitter of network routing.
-- **Native telemetry** — ACC and AC Evo use Windows shared memory, iRacing uses its SDK mapping, and LMU uses the built-in `LMU_Data` shared-memory interface.
+- **Native telemetry** — Assetto Corsa, ACC, and AC Evo use Windows shared memory, iRacing uses its SDK mapping, and LMU uses the built-in `LMU_Data` shared-memory interface.
 
 **Game on Console works.** Just make sure both your windows machine and console is wired ethernet.
 

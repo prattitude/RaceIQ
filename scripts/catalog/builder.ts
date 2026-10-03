@@ -159,6 +159,7 @@ export async function buildTelemetryCatalog(): Promise<BuiltTelemetryCatalog> {
     "ac-evo": [],
     iracing: [],
     lmu: [],
+    ac: [],
   };
   for (const set of packetSets) {
     const semantic = normalizedSemantic(set);
@@ -308,6 +309,7 @@ export async function buildTelemetryCatalog(): Promise<BuiltTelemetryCatalog> {
   for (const field of accFields) {
     addExtensionVariable(variables, groups, inventories, "acc", field);
     addExtensionVariable(variables, groups, inventories, "ac-evo", field);
+    addExtensionVariable(variables, groups, inventories, "ac", field);
   }
   for (const field of acEvoFields) {
     addExtensionVariable(variables, groups, inventories, "ac-evo", field);

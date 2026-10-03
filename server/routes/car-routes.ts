@@ -8,6 +8,7 @@ import { OrdinalParamSchema, GameIdQuerySchema } from "@shared/platform/http/rou
 import { fmCarCatalog, getFmCarSpecs } from "../../shared/racing/cars/fm";
 import { resolveCarName } from "../../shared/racing/cars/resolve-name";
 import { getAllIRacingCars } from "../../shared/racing/cars/iracing";
+import { formatAcCarModel } from "../../shared/racing/cars/ac";
 import { resolveTrackName } from "../../shared/racing/tracks/resolve-name";
 import { GameIdSchema } from "../../shared/games/ids";
 import {
@@ -124,6 +125,18 @@ export const carRoutes = new Hono()
           imageUrl: "",
         }));
       const cars = [...catalogCars, ...discoveredOnly];
+      cars.sort((a, b) => a.name.localeCompare(b.name));
+      return c.json(cars);
+    }
+
+    if (gameIdResult.data === "ac") {
+      const cars = (await listDiscoveredCars("ac")).map(({ ordinal, name }) => ({
+        ordinal,
+        name: formatAcCarModel(name),
+        path: name,
+        category: "discovered",
+        imageUrl: "",
+      }));
       cars.sort((a, b) => a.name.localeCompare(b.name));
       return c.json(cars);
     }

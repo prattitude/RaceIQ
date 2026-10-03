@@ -1,0 +1,41 @@
+id,track,layout,name,variant,commonTrackName
+1,ks_brands_hatch,gp,Brands Hatch,GP,brands-hatch
+2,ks_brands_hatch,indy,Brands Hatch,Indy,brands-hatch-indy
+3,ks_barcelona,layout_gp,Barcelona,GP,catalunya
+4,ks_barcelona,layout_moto,Barcelona,Moto,
+5,imola,,Imola,GP,imola
+6,ks_laguna_seca,,Laguna Seca,GP,laguna-seca
+7,magione,,Magione,GP,
+8,monza,,Monza,GP,monza
+9,mugello,,Mugello,GP,mugello
+10,ks_nordschleife,nordschleife,Nordschleife,Nordschleife,nordschleife
+11,ks_nordschleife,endurance,Nordschleife,Endurance,
+12,ks_nordschleife,endurance_cup,Nordschleife,Endurance Cup,
+13,ks_nordschleife,touristenfahrten,Nordschleife,Touristenfahrten,
+14,ks_nurburgring,layout_gp_a,Nürburgring,GP,nurburgring
+15,ks_nurburgring,layout_gp_b,Nürburgring,GP B,
+16,ks_nurburgring,layout_sprint_a,Nürburgring,Sprint,
+17,ks_nurburgring,layout_sprint_b,Nürburgring,Sprint B,
+18,ks_red_bull_ring,layout_gp,Red Bull Ring,GP,spielberg
+19,ks_red_bull_ring,layout_national,Red Bull Ring,National,
+20,ks_silverstone,gp,Silverstone,GP,silverstone
+21,ks_silverstone,international,Silverstone,International,
+22,ks_silverstone,national,Silverstone,National,
+23,ks_silverstone1967,,Silverstone 1967,GP,
+24,spa,,Spa-Francorchamps,GP,spa
+25,ks_vallelunga,extended_circuit,Vallelunga,Extended,
+26,ks_vallelunga,club_circuit,Vallelunga,Club,
+27,ks_vallelunga,classic_circuit,Vallelunga,Classic,
+28,ks_zandvoort,,Zandvoort,GP,zandvoort
+29,trento-bondone,,Trento-Bondone,Hillclimb,
+30,ks_highlands,layout_long,Highlands,Long,
+31,ks_highlands,layout_int,Highlands,Intermediate,
+32,ks_highlands,layout_short,Highlands,Short,
+33,ks_highlands,layout_drift,Highlands,Drift,
+34,ks_black_cat_county,layout_long,Black Cat County,Long,
+35,ks_black_cat_county,layout_int,Black Cat County,Intermediate,
+36,ks_black_cat_county,layout_short,Black Cat County,Short,
+37,drift,,Drift,Drift,
+38,ks_monza66,full,Monza 1966,Full,
+39,ks_monza66,road,Monza 1966,Road,
+40,ks_monza66,junior,Monza 1966,Junior,

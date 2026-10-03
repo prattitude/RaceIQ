@@ -1,3 +1,4 @@
+import { isKunosGameId } from "../../shared/games/kunos";
 import { TELEMETRY_CATALOG } from "../../shared/telemetry/catalog/data";
 import { canonicalTelemetryValue } from "../../shared/telemetry/replay/canonicalize";
 import type { CanonicalTelemetryEnvelope, CanonicalTelemetryValue, SemanticTelemetryReplay, TelemetryRawReference } from "../../shared/telemetry/replay/contracts";
@@ -74,7 +75,7 @@ function receivedTimestamp(createdAt: string): TelemetryTimestamp {
 
 function replayTimestamp(packet: TelemetryPacket, fallback: TelemetryTimestamp): TelemetryTimestamp {
   if (packet.extendedRaceIQ?.frameTimeMs !== undefined) return { domain: "wall-clock", milliseconds: packet.extendedRaceIQ.frameTimeMs };
-  if (packet.gameId === "acc" || packet.gameId === "ac-evo" || !Number.isFinite(packet.TimestampMS)) return fallback;
+  if (isKunosGameId(packet.gameId) || !Number.isFinite(packet.TimestampMS)) return fallback;
   return { domain: "session", milliseconds: packet.TimestampMS };
 }
 

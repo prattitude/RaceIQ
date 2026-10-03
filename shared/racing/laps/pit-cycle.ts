@@ -1,3 +1,4 @@
+import { isKunosGameId } from "../../games/kunos";
 import type { TelemetryPacket } from "../../telemetry/types";
 
 /**
@@ -85,7 +86,7 @@ function pitState(packet: TelemetryPacket): boolean | undefined {
     const active = packet.f1?.pitLaneTimerActive;
     return active === undefined ? undefined : active === 1;
   }
-  if (packet.gameId === "acc" || packet.gameId === "ac-evo") {
+  if (isKunosGameId(packet.gameId)) {
     const status = packet.acc?.pitStatus;
     return status === undefined ? undefined : status !== "out";
   }

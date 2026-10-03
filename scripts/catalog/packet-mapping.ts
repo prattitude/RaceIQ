@@ -42,6 +42,11 @@ const SOURCE_ROOTS: Partial<Record<GameId, Record<string, string>>> = {
     GRAPHICS_EVO: "AC-Evo.Graphics",
     STATIC_EVO: "AC-Evo.Static",
   },
+  ac: {
+    PHYSICS: "AC.Physics",
+    GRAPHICS: "AC.Graphics",
+    STATIC: "AC.Static",
+  },
   iracing: {
     session: "iRacing.SessionInfo",
     source: "iRacing.SourceFrame",
@@ -86,6 +91,10 @@ const PACKET_SOURCE_OVERRIDES: Partial<
     TireSurfaceTempOuterFR: ["AC-Evo.Graphics.tyre_rf.tyre_temperature_right"],
     TireSurfaceTempOuterRL: ["AC-Evo.Graphics.tyre_lr.tyre_temperature_left"],
     TireSurfaceTempOuterRR: ["AC-Evo.Graphics.tyre_rr.tyre_temperature_right"],
+  },
+  ac: {
+    CarOrdinal: ["AC.Static.carModel"],
+    TrackOrdinal: ["AC.Static.track", "AC.Static.trackConfiguration"],
   },
   lmu: {
     DrsActive: ["LMU.Telemetry.rearFlapActivated"],
@@ -286,6 +295,12 @@ const UNAVAILABLE_PACKET_FIELDS: Partial<
     DrivetrainType:
       "AC Evo parser assumes rear-wheel drive rather than reading drivetrain from shared memory.",
   },
+  ac: {
+    DrivetrainType:
+      "AC parser assumes rear-wheel drive rather than reading drivetrain from shared memory.",
+    TireTemp:
+      "AC TireTemp aliases the middle surface band; use the named inner/middle/outer surface bands.",
+  },
   iracing: {
     DrivetrainType:
       "iRacing normalizer emits a fixed drivetrain enum rather than a source-frame value.",
@@ -479,17 +494,17 @@ function packetNativeMetadata(
   if (gameId === "f1-2025" && key === "Speed") {
     return { nativeUnit: "km/h", normalization: "kilometres per hour / 3.6" };
   }
-  if ((gameId === "acc" || gameId === "ac-evo") && key === "Speed") {
+  if ((gameId === "acc" || gameId === "ac-evo" || gameId === "ac") && key === "Speed") {
     return { nativeUnit: "km/h", normalization: "kilometres per hour / 3.6" };
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac-evo" || gameId === "ac") &&
     ["BestLap", "LastLap", "CurrentLap"].includes(key)
   ) {
     return { nativeUnit: "ms", normalization: "milliseconds / 1000" };
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac-evo" || gameId === "ac") &&
     ["Accel", "Brake", "Steer"].includes(key)
   ) {
     return {
@@ -566,7 +581,7 @@ function isPacketRepresentationNormalization(
 ): boolean {
   if (native.normalization) return true;
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac-evo" || gameId === "ac") &&
     (key === "CarOrdinal" || key === "TrackOrdinal")
   ) {
     return true;
@@ -623,7 +638,7 @@ function packetGameLink(
     );
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac-evo" || gameId === "ac") &&
     set.key === "CurrentRaceTime"
   ) {
     return unavailable(

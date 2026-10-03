@@ -1,5 +1,6 @@
 import { getGame } from '../../../../games/registry';
 import type { GameId } from '../../../../games/ids';
+import { isKunosGameId } from '../../../../games/kunos';
 import type { TelemetryPacket } from '../../../../telemetry/types';
 import { createWheelCalibration, type AllWheelStates } from '../physics/vehicle';
 import { createAccelReferenceCollector, type AccelReference } from '../time-loss';
@@ -39,7 +40,7 @@ export function runInsightScanWithCoverage(sourceTelemetry: TelemetryPacket[], g
   // timestamps are acquisition time; LMU's source clock is CurrentRaceTime.
   // Leave source packets untouched for replay and align every detector window.
   const clock = gameId === "lmu" ? "CurrentRaceTime" : "CurrentLap";
-  const useClock = gameId === "acc" || gameId === "ac-evo" || gameId === "lmu";
+  const useClock = isKunosGameId(gameId) || gameId === "lmu";
   const telemetry = useClock && sourceTelemetry.some((packet) => packet[clock] !== undefined && packet.TimestampMS !== packet[clock] * 1000)
     ? sourceTelemetry.map((packet) => ({ ...packet, TimestampMS: packet[clock] === undefined ? packet.TimestampMS
       : Number.isFinite(packet[clock]) && packet[clock] >= 0 ? packet[clock] * 1000 : NaN }))

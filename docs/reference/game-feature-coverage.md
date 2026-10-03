@@ -1,6 +1,6 @@
 # Game feature coverage
 
-RaceIQ supports five games, but not every product surface or telemetry source is equivalent. This page records deliberate product and source gaps. It does not treat missing fixture evidence as an unsupported feature.
+RaceIQ supports several games, but not every product surface or telemetry source is equivalent. This page records deliberate product and source gaps. It does not treat missing fixture evidence as an unsupported feature.
 
 Canonical sources:
 
@@ -14,15 +14,15 @@ Canonical sources:
 
 `No` means RaceIQ intentionally withholds that route or workflow for the game. It does not mean the route is merely untested.
 
-| Surface | Forza Motorsport 2023 | F1 2025 | ACC | AC Evo | iRacing |
-| --- | --- | --- | --- | --- | --- |
-| Game landing, sessions, analyse, compare, chats, tracks, and cars | Yes | Yes | Yes | Yes | Yes |
-| Live dashboard | Yes | Yes | Yes | Yes, using shared Kunos dashboard | Yes, specialized Driver and Pit views |
-| Driver profile | Yes | Yes | Yes | Yes | No |
-| Setup Engineer experiments | No | Yes | Yes | Yes | No |
-| Setup and tune library | Yes | Yes | Yes | Yes | No |
-| Raw telemetry | Yes | Yes | Yes | Yes | Yes |
-| World-space racing-line and track-map analysis | Yes | Yes | Yes | Yes | No; live SDK supplies lap distance rather than stable world positions |
+| Surface | Forza Motorsport 2023 | F1 2025 | ACC | AC Evo | iRacing | Assetto Corsa |
+| --- | --- | --- | --- | --- | --- | --- |
+| Game landing, sessions, analyse, compare, chats, tracks, and cars | Yes | Yes | Yes | Yes | Yes | Yes |
+| Live dashboard | Yes | Yes | Yes | Yes, using shared Kunos dashboard | Yes, specialized Driver and Pit views | Yes, using shared Kunos dashboard |
+| Driver profile | Yes | Yes | Yes | Yes | No | No |
+| Setup Engineer experiments | No | Yes | Yes | Yes | No | No |
+| Setup and tune library | Yes | Yes | Yes | Yes | No | No |
+| Raw telemetry | Yes | Yes | Yes | Yes | Yes | Yes |
+| World-space racing-line and track-map analysis | Yes | Yes | Yes | Yes | No; live SDK supplies lap distance rather than stable world positions | Yes |
 
 ## Current game gaps
 
@@ -48,6 +48,13 @@ Canonical sources:
 - Native setup inspection is unavailable.
 - Some centerlines still under-detect individual corners; accepted cases remain in the shrink-only track gap register.
 - Click-to-real-value setup mappings remain unverified for clamping and control availability. See [per-car setup ranges](../project-status/per-car-setup-ranges.md).
+
+### Assetto Corsa
+
+- Reads the AC v1.7 shared-memory layout (`acs.exe`). Brake temperature, slip ratio, slip angle, tyre wear, and brake-pad data are not published, so those analyses are unavailable.
+- AC has no lap-validity flag. RaceIQ marks a lap invalid for track limits when more than two tyres are off track for consecutive frames outside the pit lane.
+- Cars are registered from their content folder name on first sight; only Kunos tracks in the bundled catalog resolve to named layouts and shared track metadata.
+- No Driver profile, Setup Engineer experiment, or setup/tune-library route.
 
 ### iRacing
 

@@ -10,6 +10,7 @@
 - Show each saved setup's best valid recorded lap from sessions using that setup, and sort setups by recorded lap time.
 - Select or clear a track when creating or editing ACC and AC Evo setups; restrict track-specific setup best laps to that circuit.
 - Use accessible toggle groups for setup sections and setup sources.
+- Record live telemetry, laps, and sessions from the original Assetto Corsa on Windows; laps where more than two tyres leave the track are marked invalid.
 
 ### Fixes
 
@@ -28,6 +29,7 @@
 - Use the application background instead of gray fill for shared text and numeric inputs.
 
 ### Internal
+- Add an original Assetto Corsa (`ac`) adapter over AC v1.7 shared memory, with a bundled Kunos track catalog, discovered-car identity, ACCTEST dump import, telemetry catalog column, and a real-capture replay fixture.
 - Use bundled ACC track SVGs for segment generation, visualization, and runtime centerlines; remove obsolete centerline CSVs and migrate saved segment and sector positions while preserving curated turns.
 - Exclude generated JavaScript from client typechecking and emit Paraglide declarations in development so translation imports remain typed.
 - Seed and validate the compiled E2E database once per workflow, then restore isolated database and capture copies in seeded shards instead of repeating fixture imports.

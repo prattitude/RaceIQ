@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import type { GameId } from "../../shared/games/ids";
+import { isKunosGameId } from "../../shared/games/kunos";
 import type { TelemetryPacket } from "../../shared/telemetry/types";
 import { compileTelemetryResolver } from "../../shared/telemetry/resolver/compile";
 import type { CompiledTelemetryResolver, ResolvedValue, TelemetryFrameView } from "../../shared/telemetry/resolver/contracts";
@@ -27,7 +28,7 @@ export class LiveTelemetryProjector {
     if (this.gameId !== gameId || this.sessionId !== sessionId || !this.resolver) this.startStream(gameId, sessionId);
     const resolver = this.resolver!;
     const observedMs = Number.isFinite(input.packet.TimestampMS) ? input.packet.TimestampMS : input.receivedAtMs;
-    const timestampDomain = gameId === "acc" || gameId === "ac-evo" ? "wall-clock" as const : "session" as const;
+    const timestampDomain = isKunosGameId(gameId) ? "wall-clock" as const : "session" as const;
     const observation = { timestamp: { domain: timestampDomain, milliseconds: observedMs }, updateSequence: BigInt(this.sequence + 1) };
     this.view = resolver.createFrameView(input.packet, observation, this.view);
     const resolved = this.view.resolveMany(liveSemanticIds(gameId).map((id) => resolver.slot(id))) as readonly ResolvedValue<unknown>[];

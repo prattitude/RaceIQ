@@ -5,6 +5,7 @@ import { accAdapter } from "./acc";
 import { acEvoAdapter } from "./ac-evo";
 import { iracingAdapter } from "./iracing";
 import { lmuAdapter } from "./lmu";
+import { acAdapter } from "./ac";
 import { releaseFeatureFlags, type ReleaseFeatureFlags } from "../platform/runtime/release-feature-flags";
 
 export function gameAdaptersForFeatures(
@@ -15,7 +16,7 @@ export function gameAdaptersForFeatures(
 ) {
   const adapters = [forzaAdapter, f1Adapter, accAdapter, acEvoAdapter];
   if (flags.iracingAdapter) adapters.push(iracingAdapter);
-  adapters.push(lmuAdapter);
+  adapters.push(lmuAdapter, acAdapter);
   return adapters;
 }
 

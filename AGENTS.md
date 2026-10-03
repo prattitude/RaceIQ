@@ -5,7 +5,7 @@ This file provides guidance to coding agents working in this repository.
 
 ## Project Overview
 
-RaceIQ is a full-stack racing telemetry analysis app for Forza Motorsport 2023, F1 25, Assetto Corsa Competizione, Assetto Corsa Evo, and iRacing. UDP and native Windows telemetry sources feed a Bun server, SQLite storage, and a React dashboard. See [architecture overview](docs/architecture/overview.md).
+RaceIQ is a full-stack racing telemetry analysis app for Forza Motorsport 2023, F1 25, Assetto Corsa, Assetto Corsa Competizione, Assetto Corsa Evo, iRacing, and Le Mans Ultimate. UDP and native Windows telemetry sources feed a Bun server, SQLite storage, and a React dashboard. See [architecture overview](docs/architecture/overview.md).
 
 ## Codebase Discovery
 
@@ -317,6 +317,7 @@ The app uses a registry-based adapter pattern to support multiple racing games. 
 - `shared/games/acc/` + `server/games/acc/` — Assetto Corsa Competizione
 - `shared/games/ac-evo/` + `server/games/ac-evo/` — Assetto Corsa Evo
 - `shared/games/iracing/` + `server/games/iracing/` — iRacing
+- `shared/games/ac/` + `server/games/ac/` — original Assetto Corsa (v1.7 shared memory)
 
 Follow the registry and boundary model in [architecture overview](docs/architecture/overview.md). Implement shared and server adapters, register both, then add game-specific parsing, routes, data, and focused tests. Never introduce an implicit fallback game.
 

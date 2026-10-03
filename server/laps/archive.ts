@@ -24,7 +24,7 @@ import { getLapsRaw } from "../db/lap-read-queries";
 import { loadSessionCapture } from "../session-capture/source-loader";
 import { encodeLmuSparseFrame } from "../session-capture/lmu-sparse";
 import { LMU_SOURCE_FRAME_MAGIC, LMU_SOURCE_FRAME_V2_SIZE } from "../games/lmu/source-frame";
-import { ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
+import { AC_PACKED_MAGIC, ACC_PACKED_MAGIC, ACEVO_PACKED_MAGIC } from "../games/kunos/pack-triplet";
 import { encodeKunosSparseFrame } from "../session-capture/kunos-sparse";
 import { encodeGenericSparseFrame, genericFrameIdentity } from "../session-capture/generic-sparse";
 import { resolveCarName } from "../../shared/racing/cars/resolve-name";
@@ -277,7 +277,8 @@ function sparseLapRecords(buf: Buffer, start: number, end: number, gameId: GameI
       record.frame.subarray(0, LMU_SOURCE_FRAME_MAGIC.length).equals(LMU_SOURCE_FRAME_MAGIC);
     const magic = record.frame.length >= 4 ? record.frame.readUInt32LE(0) : 0;
     const isKunos = (gameId === "acc" && magic === ACC_PACKED_MAGIC) ||
-      (gameId === "ac-evo" && magic === ACEVO_PACKED_MAGIC);
+      (gameId === "ac-evo" && magic === ACEVO_PACKED_MAGIC) ||
+      (gameId === "ac" && magic === AC_PACKED_MAGIC);
     const supportsGeneric = gameId === "fm-2023" || gameId === "f1-2025" || gameId === "iracing";
     const identity = supportsGeneric ? genericFrameIdentity(record.frame) : null;
     const canDelta = isLmuV2 || isKunos || identity !== null;
@@ -389,7 +390,7 @@ export async function buildLapsZip(
           ? [encodeSegmentContextFrame(), ...context, encodeSegmentContextEndFrame()]
           : []),
         ...(prefix ? [prefix] : []),
-        ...(first.gameId === "lmu" || first.gameId === "acc" || first.gameId === "ac-evo" ||
+        ...(first.gameId === "lmu" || first.gameId === "acc" || first.gameId === "ac-evo" || first.gameId === "ac" ||
           first.gameId === "fm-2023" || first.gameId === "f1-2025" || first.gameId === "iracing"
           ? sparseLapRecords(buf, start, end, first.gameId)
           : [buf.subarray(start, end)]),

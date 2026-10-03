@@ -8,6 +8,7 @@
 
 export const ACC_PACKED_MAGIC  = 0x50434341; // "ACCP" as uint32 LE
 export const ACEVO_PACKED_MAGIC = 0x50454341; // "ACEP" as uint32 LE
+export const AC_PACKED_MAGIC = 0x50534341; // "ACSP" as uint32 LE (original AC, acs.exe)
 
 export function packTriplet(
   magic: number,

@@ -31,12 +31,13 @@ export function AccLiveDashboard({ gameId = "acc" }: { gameId?: GameId }) {
     );
   }
 
+  const hasTemperatureBands = gameId === "ac-evo" || gameId === "ac";
   const wheelData = (corner: "fl" | "fr" | "rl" | "rr") => {
     const surface = view.tires.surfaceTemperatureC?.[corner];
     return {
       tempC: primaryTireTemperatureC(view.tires, corner) ?? 0,
-      ...(gameId === "ac-evo" && view.tires.coreTemperatureC ? { coreTempC: view.tires.coreTemperatureC[corner] } : {}),
-      ...(gameId === "ac-evo" && surface?.inner !== undefined && surface.middle !== undefined && surface.outer !== undefined
+      ...(hasTemperatureBands && view.tires.coreTemperatureC ? { coreTempC: view.tires.coreTemperatureC[corner] } : {}),
+      ...(hasTemperatureBands && surface?.inner !== undefined && surface.middle !== undefined && surface.outer !== undefined
         ? { temperatureBandsC: { inner: surface.inner, middle: surface.middle, outer: surface.outer } } : {}),
       wear: view.tires.wear?.[corner] ?? 0,
       ...(view.tires.brakeTemperatureC ? { brakeTemp: view.tires.brakeTemperatureC[corner] } : {}),

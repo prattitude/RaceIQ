@@ -18,6 +18,7 @@ export type LapIndexPacket = Pick<
   | "IsRaceOn"
   | "TimestampMS"
   | "CarOrdinal"
+  | "carModelName"
   | "TrackOrdinal"
   | "CarPerformanceIndex"
   | "CarClass"
