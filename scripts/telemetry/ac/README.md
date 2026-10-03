@@ -7,6 +7,7 @@ Capture tools for original Assetto Corsa (`acs.exe`) Windows shared-memory pages
 | Command | Required input | Output |
 | --- | --- | --- |
 | `bun scripts/telemetry/ac/capture.ts [--out <dir>]` | Assetto Corsa running with `Local\\acpmf_*` pages | Kunos `.bin` capture (default `%USERPROFILE%\RaceIQ-captures\ac`), live rate and identity log |
+| `bun scripts/telemetry/ac/inspect-capture.ts <capture.bin[.gz]>` | AC capture from `capture.ts` | Page extents, AC 1.7 channel ranges, lap/sector/pit events, tyres-out per lap |
 
 ## Boundaries and verification
 
