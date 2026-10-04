@@ -1,14 +1,15 @@
 import { afterEach, describe, expect, test, spyOn } from "bun:test";
+import { writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { eq } from "drizzle-orm";
 import { db } from "../../server/db";
 import { sessions, sessionResults } from "../../server/db/schema";
-import { insertSession } from "../../server/db/session-queries";
+import { countStaleSessions, insertSession } from "../../server/db/session-queries";
 import { upsertSessionResult, type SessionResultInput } from "../../server/db/session-result-queries";
 import { RACE_RESULT_PROCESSOR_ID } from "../../server/race-results/reconcile";
-import { LAP_DETECTOR_ID } from "../../server/lap-detection/detector";
-import { LAP_DETECTOR_ACC_ID } from "../../server/games/acc/lap-detector";
-import { LAP_DETECTOR_AC_EVO_ID } from "../../server/games/ac-evo/lap-detector";
-import { LAP_DETECTOR_IRACING_ID } from "../../server/games/iracing/lap-detector";
+import { LAP_DETECTOR_AC_ID } from "../../server/games/ac/lap-detector";
+import { CURRENT_LAP_DETECTOR_IDS } from "../../server/lap-detection/current-detector-ids";
 import type { RaceResultEvidence, RaceResultProvenance } from "../../shared/racing/results/types";
 import { wsManager } from "../../server/runtime/websocket-manager";
 import { startSyncAndStaleSessionJobs } from "../../server/runtime/startup-jobs";
@@ -85,7 +86,7 @@ describe("startup stale-session notifications", () => {
   test("publishes stale detector and race-result payloads with resultless rows", async () => {
     const oldRaw = await insertDetectorSession("old.bin", "old-detector");
     const nullRaw = await insertDetectorSession("null.bin", null);
-    const currentDetector = await insertDetectorSession("current.bin", LAP_DETECTOR_ID);
+    const currentDetector = await insertDetectorSession("current.bin", CURRENT_LAP_DETECTOR_IDS[0]);
     const noRaw = await insertDetectorSession(null, null);
     const oldResult = await insertSession(2, 3, "f1-2025", "race");
     const resultless = await insertSession(2, 4, "f1-2025", "race");
@@ -107,12 +108,13 @@ describe("startup stale-session notifications", () => {
     });
     await waitForStartupChecks();
 
-    expect(staleSessionsSpy).toHaveBeenCalledWith({ type: "stale-lap-detection", sessionCount: 2, currentVersion: [LAP_DETECTOR_ID, LAP_DETECTOR_ACC_ID, LAP_DETECTOR_AC_EVO_ID, LAP_DETECTOR_IRACING_ID].join(",") });
+    expect(CURRENT_LAP_DETECTOR_IDS).toContain(LAP_DETECTOR_AC_ID);
+    expect(staleSessionsSpy).toHaveBeenCalledWith({ type: "stale-lap-detection", sessionCount: 2, currentVersion: CURRENT_LAP_DETECTOR_IDS.join(",") });
     expect(staleResultsSpy).toHaveBeenCalledWith({ type: "stale-race-results", sessionCount: 2, currentVersion: RACE_RESULT_PROCESSOR_ID });
   });
   test("publishes no notification for all-current detector IDs and non-raw sessions", async () => {
     const currentDetectorSessions: Array<{ id: number }> = [];
-    for (const detectorVersion of [LAP_DETECTOR_ID, LAP_DETECTOR_ACC_ID, LAP_DETECTOR_AC_EVO_ID, LAP_DETECTOR_IRACING_ID]) {
+    for (const detectorVersion of CURRENT_LAP_DETECTOR_IDS) {
       currentDetectorSessions.push(await insertDetectorSession(`${detectorVersion}.bin`, detectorVersion));
     }
     const noRaw = await insertDetectorSession(null, null);
@@ -133,6 +135,32 @@ describe("startup stale-session notifications", () => {
 
     expect(staleSessionsSpy).not.toHaveBeenCalled();
     expect(staleResultsSpy).not.toHaveBeenCalled();
+  });
+
+  test("does not treat a current Assetto Corsa recording as stale", async () => {
+    const rawFile = join(tmpdir(), `raceiq-ac-detector-${Date.now()}.bin`);
+    writeFileSync(rawFile, "x");
+    const current = await db.insert(sessions).values({
+      carOrdinal: 1,
+      trackOrdinal: 1,
+      gameId: "ac",
+      rawFile,
+      lapDetectorVersion: LAP_DETECTOR_AC_ID,
+    }).returning({ id: sessions.id }).get();
+    sessionIds.push(current.id);
+    const before = await countStaleSessions(CURRENT_LAP_DETECTOR_IDS, ["ac"]);
+    const missing = await db.insert(sessions).values({
+      carOrdinal: 1,
+      trackOrdinal: 1,
+      gameId: "ac",
+      rawFile,
+      lapDetectorVersion: null,
+    }).returning({ id: sessions.id }).get();
+    sessionIds.push(missing.id);
+
+    expect(before).toBe(0);
+    expect(await countStaleSessions(CURRENT_LAP_DETECTOR_IDS, ["ac"])).toBe(1);
+    rmSync(rawFile, { force: true });
   });
 
 });

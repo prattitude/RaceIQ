@@ -28,6 +28,7 @@
 - Use searchable car, track, and category selectors in ACC and AC Evo setup forms.
 - Use the application background instead of gray fill for shared text and numeric inputs.
 - Stop counting a session that starts in the garage as a pit stop, so the first timed lap after leaving the pits is no longer marked as an outlap.
+- Stop asking to reparse Assetto Corsa sessions that were already recorded with the current lap detector.
 
 ### Internal
 - Add an original Assetto Corsa (`ac`) adapter over AC v1.7 shared memory, with a bundled Kunos track catalog, discovered-car identity, ACCTEST dump import, telemetry catalog column, and a real-capture replay fixture.

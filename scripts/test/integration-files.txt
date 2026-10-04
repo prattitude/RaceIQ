@@ -71,6 +71,9 @@ test/experiments/drills/record.test.ts
 test/experiments/drills/setup-lineage.test.ts
 test/experiments/drills/undo.test.ts
 test/experiments/drills/versions.test.ts
+test/games/ac/ac-catalog.test.ts
+test/games/ac/ac-import.test.ts
+test/games/ac/ac-session-replay.test.ts
 test/games/ac-evo/ac-evo-batch-decode.test.ts
 test/games/ac-evo/ac-evo-car-data.test.ts
 test/games/ac-evo/ac-evo-distance-integration.test.ts

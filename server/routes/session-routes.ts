@@ -7,10 +7,7 @@ import { getSessions, deleteSession, updateSession, countStaleSessions, getStale
 import { getSessionResult, getStaleRaceResultSessionIds } from "../db/session-result-queries";
 import { reprocessSession, SessionNotFoundError, SessionRawFileMissingError } from "../session-capture/reprocess";
 import { getCaptureMigrationProgress, migrateCaptures } from "../session-capture/migrate-captures";
-import { LAP_DETECTOR_ID } from "../lap-detection/detector";
-import { LAP_DETECTOR_ACC_ID } from "../games/acc/lap-detector";
-import { LAP_DETECTOR_AC_EVO_ID } from "../games/ac-evo/lap-detector";
-import { LAP_DETECTOR_IRACING_ID } from "../games/iracing/lap-detector";
+import { CURRENT_LAP_DETECTOR_IDS } from "../lap-detection/current-detector-ids";
 import { getAllServerGames } from "../games/registry";
 import { wsManager } from "../runtime/websocket-manager";
 import { computeRecap } from "../lap-analysis/recap";
@@ -21,8 +18,6 @@ import { getLMUCar, getLMUTrack } from "../../shared/games/lmu/catalog";
 import { backfillRaceResults, reconcileSessionResult, RACE_RESULT_PROCESSOR_ID } from "../race-results/reconcile";
 import { getRaceResultAggregate, getRecentRaceResults } from "../race-results/aggregates";
 import { recoverDeletedSessions } from "../telemetry/live-pipeline";
-
-const ALL_DETECTOR_IDS = [LAP_DETECTOR_ID, LAP_DETECTOR_ACC_ID, LAP_DETECTOR_AC_EVO_ID, LAP_DETECTOR_IRACING_ID];
 
 export const sessionRoutes = new Hono()
   .get("/api/sessions/capture-migration-status", async (c) => c.json({
@@ -124,7 +119,7 @@ export const sessionRoutes = new Hono()
       const result = await reprocessSession(id);
       wsManager.broadcastNotification({ type: "lap-reprocessed", ...result });
       const remaining = await countStaleSessions(
-        ALL_DETECTOR_IDS,
+        CURRENT_LAP_DETECTOR_IDS,
         getAllServerGames().map((adapter) => adapter.id),
       );
       if (remaining === 0) wsManager.setStaleSessionsNotification(null);
@@ -141,7 +136,7 @@ export const sessionRoutes = new Hono()
   })
   .post("/api/sessions/reprocess-stale", async (c) => {
     const staleIds = await getStaleSessions(
-      ALL_DETECTOR_IDS,
+      CURRENT_LAP_DETECTOR_IDS,
       getAllServerGames().map((adapter) => adapter.id),
     );
     const results = [];
