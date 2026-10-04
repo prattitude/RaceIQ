@@ -1,20 +1,31 @@
-﻿using Microsoft.Windows.AI.MachineLearning;
+﻿using Trailbrake;
 
-// These Windows ML providers are the ones that can expose an NPU.
-// A ready provider still has to be bound to an NPU device before any model runs.
-// GPU and CPU devices are never a fallback.
-string[] npuProviders = ["QNNExecutionProvider", "VitisAIExecutionProvider", "OpenVINOExecutionProvider"];
+var ensureReady = args.Contains("--ensure-ready", StringComparer.OrdinalIgnoreCase);
+var jsonOnly = args.Contains("--json", StringComparer.OrdinalIgnoreCase);
+var outPath = args.SkipWhile(arg => !string.Equals(arg, "--out", StringComparison.OrdinalIgnoreCase)).Skip(1).FirstOrDefault()
+    ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Trailbrake", "npu-capability.json");
 
-var providers = ExecutionProviderCatalog.GetDefault().FindAllProviders();
-var npuReady = providers.Any(provider =>
-    provider.ReadyState == ExecutionProviderReadyState.Ready
-    && npuProviders.Contains(provider.Name, StringComparer.Ordinal));
+var report = NpuCapability.Capture();
 
-Console.WriteLine(npuReady
-    ? "Trailbrake NPU features can run. No model is loaded by this probe."
-    : "Trailbrake NPU features are off. This PC has no ready NPU execution provider.");
-
-foreach (var provider in providers.OrderBy(provider => provider.Name, StringComparer.Ordinal))
+if (ensureReady)
 {
-    Console.WriteLine($"{provider.Name}: {provider.ReadyState}");
+    var result = await NpuCapability.EnsureRecommendedProviderAsync(report);
+    Console.WriteLine(result);
+    report = NpuCapability.Capture();
 }
+
+Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+await File.WriteAllTextAsync(outPath, NpuCapability.ToJson(report));
+
+if (jsonOnly)
+{
+    Console.WriteLine(NpuCapability.ToJson(report));
+}
+else
+{
+    NpuCapability.WriteHumanReport(report, Console.Out);
+    Console.WriteLine();
+    Console.WriteLine($"Status written for Trailbrake/RaceIQ: {outPath}");
+}
+
+return report.NpuFeaturesEnabled ? 0 : 2;
