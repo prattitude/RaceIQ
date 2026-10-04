@@ -4,6 +4,7 @@ import { errorLogger } from "@raceiq/backend-core/runtime/logger";
 import { IS_DEV, IS_E2E } from "@raceiq/backend-core/runtime/config/env";
 
 import { settingsRoutes } from "./settings-routes";
+import { trailbrakeRoutes } from "./trailbrake-routes";
 import { lapRoutes } from "./laps/index";
 import { driverRoutes } from "./driver-routes";
 import { chatsRoutes } from "./chats-routes";
@@ -41,10 +42,11 @@ const app = new Hono()
   )
   .use("/*", errorLogger())
   .route("/", settingsRoutes)
+  .route("/", trailbrakeRoutes)
   .route("/", lapRoutes)
   .route("/", driverRoutes)
   .route("/", chatsRoutes)
-.route("/", chatRunRoutes)
+  .route("/", chatRunRoutes)
   .route("/", sessionRoutes)
   .route("/", trackRoutes)
   .route("/", carRoutes)

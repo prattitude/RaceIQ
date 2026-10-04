@@ -454,8 +454,7 @@
   "setup_prev_button": "← 前へ",
   "setup_next_button": "次へ →",
   "setup_no_matches": "この条件に一致するセットアップはありません。",
-  "setup_sort_info": "↕ ラップタイムで並べ替え · 比較するにはコースを選択（タイムは同じコース内でのみ比較できます）。"
-,
+  "setup_sort_info": "↕ ラップタイムで並べ替え · 比較するにはコースを選択（タイムは同じコース内でのみ比較できます）。",
   "import_pick_setup": "Documentsフォルダーからセットアップを選択してください。",
   "import_scanning": "セットアップをスキャン中...",
   "import_expected_path": "次の場所にあるはずです",
@@ -2375,5 +2374,17 @@
   "dash_waiting_track": "コースを待機中…",
   "experiment_focus_car_agent_label": "レースエンジニア",
   "experiment_focus_driver_agent_label": "ドライビングコーチ",
-  "experiment_focus_driver_hint": "運転技術の向上に集中しましょう。"
+  "experiment_focus_driver_hint": "運転技術の向上に集中しましょう。",
+  "trailbrake_desc": "RaceIQ と連携する NPU 専用ドライビング支援。NPU プロバイダーが準備できていないときは予測機能はオフのままです。",
+  "trailbrake_companion_running": "コンパニオン実行中",
+  "trailbrake_provider_label": "プロバイダー",
+  "trailbrake_launch_hint": "起動: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "更新",
+  "trailbrake_companion_stopped": "コンパニオン未実行",
+  "trailbrake_npu_ready": "NPU 準備完了",
+  "trailbrake_npu_off": "NPU 機能オフ",
+  "trailbrake_title": "Trailbrake コンパニオン",
+  "trailbrake_no_status": "Trailbrake の状態がまだありません。プローブを実行してからコンパニオンを起動してください。",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "予測"
 }

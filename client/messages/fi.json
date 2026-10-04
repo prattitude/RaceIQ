@@ -2374,5 +2374,17 @@
 "experiment_focus_car_agent_label": "Kilpailuinsinööri",
   "experiment_focus_driver_agent_label": "Ajo-opettaja",
   "ob_community_body": "RaceIQ on avoimen lähdekoodin projekti, joka tarvitsee yhteisön tukea. Voit auttaa levittämällä tietoa, lähettämällä ominaisuuspyyntöjä tai virheraportteja tai osallistumalla lähdekoodin kehittämiseen.",
-  "settings_port_range_error": "Portin on oltava välillä 1024–65535"
+  "settings_port_range_error": "Portin on oltava välillä 1024–65535",
+  "trailbrake_desc": "Vain NPU:lla toimiva RaceIQ-linkitetty ajoapu. Ennusteet pysyvät pois päältä ilman valmista NPU-palveluntarjoajaa.",
+  "trailbrake_companion_running": "Kumppani käynnissä",
+  "trailbrake_provider_label": "Palveluntarjoaja",
+  "trailbrake_launch_hint": "Käynnistä: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Päivitä",
+  "trailbrake_companion_stopped": "Kumppani ei käynnissä",
+  "trailbrake_npu_ready": "NPU valmis",
+  "trailbrake_npu_off": "NPU-ominaisuudet pois",
+  "trailbrake_title": "Trailbrake-kumppani",
+  "trailbrake_no_status": "Trailbrake-tilaa ei ole vielä. Suorita probe ja käynnistä sitten companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Ennuste"
 }

@@ -2374,5 +2374,17 @@
   "experiment_new_button": "+ Nieuw experiment",
   "dash_waiting_track": "Wachten op circuit…",
   "experiment_focus_car_agent_label": "Race-engineer",
-  "experiment_focus_driver_agent_label": "Rijcoach"
+  "experiment_focus_driver_agent_label": "Rijcoach",
+  "trailbrake_desc": "Alleen-NPU rijhulp gekoppeld aan RaceIQ. Forecasts blijven uit zonder een gereed NPU-provider.",
+  "trailbrake_companion_running": "Companion actief",
+  "trailbrake_provider_label": "Provider",
+  "trailbrake_launch_hint": "Starten met: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Vernieuwen",
+  "trailbrake_companion_stopped": "Companion niet actief",
+  "trailbrake_npu_ready": "NPU gereed",
+  "trailbrake_npu_off": "NPU-functies uit",
+  "trailbrake_title": "Trailbrake-companion",
+  "trailbrake_no_status": "Nog geen Trailbrake-status. Voer de probe uit en start daarna de companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Forecast"
 }

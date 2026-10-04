@@ -13,6 +13,7 @@ import { NAV_ITEMS, NAV_LABELS, type SectionId } from "./navigation";
 import { StorageSection } from "./StorageSection";
 import { SoundSection } from "./sound/SoundSection";
 import { SpeedSection } from "./speed/SpeedSection";
+import { TrailbrakeSection } from "./TrailbrakeSection";
 import { UpdatesSection } from "./UpdatesSection";
 import { WheelSection } from "./wheel/WheelSection";
 
@@ -89,6 +90,7 @@ export function Settings({ initialSection, onClose }: { initialSection?: Section
         {activeSection === "sound" && <SoundSection />}
         {activeSection === "storage" && <StorageSection />}
         {activeSection === "ai" && <AiSection />}
+        {activeSection === "trailbrake" && <TrailbrakeSection />}
         {activeSection === "diagnostics" && <DiagnosticsSection />}
         {activeSection === "updates" && <UpdatesSection />}
         {activeSection === "about" && <AboutSection />}

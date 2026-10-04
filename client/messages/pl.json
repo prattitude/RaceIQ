@@ -2374,5 +2374,17 @@
   "experiment_focus_car_agent_label": "Inżynier wyścigowy",
   "experiment_focus_driver_agent_label": "Trener kierowcy",
   "ob_community_body": "RaceIQ to projekt open source, który rozwija się dzięki społeczności. Każdy może pomóc — rozpowszechniając informacje, zgłaszając pomysły i błędy lub współtworząc kod.",
-  "settings_port_range_error": "Port musi mieścić się w zakresie 1024–65535"
+  "settings_port_range_error": "Port musi mieścić się w zakresie 1024–65535",
+  "trailbrake_desc": "Asystent jazdy tylko na NPU powiązany z RaceIQ. Prognozy pozostają wyłączone bez gotowego dostawcy NPU.",
+  "trailbrake_companion_running": "Companion działa",
+  "trailbrake_provider_label": "Dostawca",
+  "trailbrake_launch_hint": "Uruchom: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Odśwież",
+  "trailbrake_companion_stopped": "Companion nie działa",
+  "trailbrake_npu_ready": "NPU gotowe",
+  "trailbrake_npu_off": "Funkcje NPU wyłączone",
+  "trailbrake_title": "Companion Trailbrake",
+  "trailbrake_no_status": "Brak statusu Trailbrake. Uruchom probe, potem companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Prognoza"
 }

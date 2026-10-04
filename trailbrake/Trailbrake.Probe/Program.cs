@@ -3,7 +3,7 @@
 var ensureReady = args.Contains("--ensure-ready", StringComparer.OrdinalIgnoreCase);
 var jsonOnly = args.Contains("--json", StringComparer.OrdinalIgnoreCase);
 var outPath = args.SkipWhile(arg => !string.Equals(arg, "--out", StringComparison.OrdinalIgnoreCase)).Skip(1).FirstOrDefault()
-    ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Trailbrake", "npu-capability.json");
+    ?? TrailbrakePaths.NpuCapabilityPath;
 
 var report = NpuCapability.Capture();
 
@@ -14,7 +14,7 @@ if (ensureReady)
     report = NpuCapability.Capture();
 }
 
-Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+TrailbrakePaths.EnsureRoot();
 await File.WriteAllTextAsync(outPath, NpuCapability.ToJson(report));
 
 if (jsonOnly)

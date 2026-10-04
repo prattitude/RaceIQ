@@ -2374,5 +2374,17 @@
   "dash_waiting_track": "Esperando el circuito…",
   "experiment_focus_car_agent_label": "Ingeniero de carrera",
   "experiment_focus_driver_agent_label": "Entrenador de conducción",
-  "tune_confirm": "Confirmar"
+  "tune_confirm": "Confirmar",
+  "trailbrake_desc": "Ayuda de conducción solo NPU vinculada a RaceIQ. Las previsiones permanecen desactivadas sin un proveedor NPU listo.",
+  "trailbrake_companion_running": "Companion en ejecución",
+  "trailbrake_provider_label": "Proveedor",
+  "trailbrake_launch_hint": "Inicia con: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Actualizar",
+  "trailbrake_companion_stopped": "Companion detenido",
+  "trailbrake_npu_ready": "NPU listo",
+  "trailbrake_npu_off": "Funciones NPU desactivadas",
+  "trailbrake_title": "Companion Trailbrake",
+  "trailbrake_no_status": "Aún no hay estado de Trailbrake. Ejecuta la sonda y luego el companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Previsión"
 }

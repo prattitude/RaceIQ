@@ -2374,5 +2374,17 @@
   "experiment_focus_driver_agent_label": "Тренер пилота",
   "accsetup_bump_fast": "Быстрое сжатие",
   "ob_community_body": "RaceIQ — проект с открытым исходным кодом, который зависит от сообщества. Рассказывайте о проекте, предлагайте функции, сообщайте об ошибках или помогайте с кодом — любой вклад делает приложение лучше.",
-  "settings_port_range_error": "Порт должен быть в диапазоне 1024–65535"
+  "settings_port_range_error": "Порт должен быть в диапазоне 1024–65535",
+  "trailbrake_desc": "Помощник вождения только на NPU, связанный с RaceIQ. Прогнозы выключены, пока нет готового NPU-провайдера.",
+  "trailbrake_companion_running": "Компаньон запущен",
+  "trailbrake_provider_label": "Провайдер",
+  "trailbrake_launch_hint": "Запуск: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Обновить",
+  "trailbrake_companion_stopped": "Компаньон не запущен",
+  "trailbrake_npu_ready": "NPU готов",
+  "trailbrake_npu_off": "Функции NPU выключены",
+  "trailbrake_title": "Компаньон Trailbrake",
+  "trailbrake_no_status": "Статуса Trailbrake ещё нет. Запустите probe, затем companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Прогноз"
 }

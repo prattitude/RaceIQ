@@ -2,6 +2,8 @@
 
 ### Features
 
+- See Trailbrake companion status in Settings, including NPU readiness and the live RaceIQ link.
+
 ### Fixes
 
 ### Internal

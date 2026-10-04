@@ -2374,5 +2374,17 @@
   "experiment_focus_car_agent_label": "Engenheiro de corrida",
   "experiment_focus_driver_agent_label": "Treinador de pilotagem",
   "analyse_ai_analysis": "Análise de IA",
-  "insight_category_suspension": "Suspensão"
+  "insight_category_suspension": "Suspensão",
+  "trailbrake_desc": "Ajuda de direção só NPU ligada ao RaceIQ. As previsões ficam desligadas sem um provedor NPU pronto.",
+  "trailbrake_companion_running": "Companion em execução",
+  "trailbrake_provider_label": "Provedor",
+  "trailbrake_launch_hint": "Inicie com: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Atualizar",
+  "trailbrake_companion_stopped": "Companion parado",
+  "trailbrake_npu_ready": "NPU pronto",
+  "trailbrake_npu_off": "Recursos NPU desligados",
+  "trailbrake_title": "Companion Trailbrake",
+  "trailbrake_no_status": "Ainda sem status do Trailbrake. Execute a sonda e depois o companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Previsão"
 }

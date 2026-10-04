@@ -2374,5 +2374,17 @@
   "experiment_search_aria": "Cerca esperimenti",
   "experiment_guide": "Guida",
   "experiment_new_button": "+ Nuovo esperimento",
-  "dash_waiting_track": "In attesa del tracciato…"
+  "dash_waiting_track": "In attesa del tracciato…",
+  "trailbrake_desc": "Aiuto di guida solo NPU collegato a RaceIQ. Le previsioni restano disattivate senza un provider NPU pronto.",
+  "trailbrake_companion_running": "Companion in esecuzione",
+  "trailbrake_provider_label": "Provider",
+  "trailbrake_launch_hint": "Avvia con: dotnet run --project trailbrake/Trailbrake.Companion",
+  "trailbrake_refresh": "Aggiorna",
+  "trailbrake_companion_stopped": "Companion non in esecuzione",
+  "trailbrake_npu_ready": "NPU pronto",
+  "trailbrake_npu_off": "Funzioni NPU disattivate",
+  "trailbrake_title": "Companion Trailbrake",
+  "trailbrake_no_status": "Nessuno stato Trailbrake. Esegui la probe, poi avvia il companion.",
+  "settings_nav_trailbrake": "Trailbrake",
+  "trailbrake_forecast_label": "Previsione"
 }
