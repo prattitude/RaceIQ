@@ -98,6 +98,12 @@ function addSectorDerivedVariables(
         "current lap time - time at native sector-index transition",
         "RaceIQ times ACC native sector transitions.",
       ),
+      ac: derivedLink(
+        "s",
+        ["TelemetryPacket.CurrentLap", "acc.currentSectorIndex"],
+        "current lap time - time at native sector-index transition",
+        "RaceIQ times Assetto Corsa native sector transitions.",
+      ),
       "ac-evo": derivedLink(
         "s",
         ["TelemetryPacket.CurrentLap", "TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
@@ -185,6 +191,12 @@ function addSectorDerivedVariables(
         "append native completed sector milliseconds and running sector seconds",
         "RaceIQ assembles current ACC sector array from native transitions.",
       ),
+      ac: derivedLink(
+        "ms",
+        ["acc.currentSectorIndex", "acc.lastSectorTime", "TelemetryPacket.CurrentLap"],
+        "append native completed sector milliseconds and running sector seconds",
+        "RaceIQ assembles current Assetto Corsa sector array from native transitions.",
+      ),
       "ac-evo": derivedLink(
         "s",
         ["TelemetryPacket.CurrentLap", "TelemetryPacket.DistanceTraveled", "RaceIQ.Track.sectorStarts"],
@@ -226,6 +238,12 @@ function addSectorDerivedVariables(
         ["acc.currentSectorIndex", "acc.lastSectorTime", "TelemetryPacket.LastLap"],
         "assemble native completed sectors; final sector = lap time - prior sectors",
         "RaceIQ stores completed ACC sector array.",
+      ),
+      ac: derivedLink(
+        "ms",
+        ["acc.currentSectorIndex", "acc.lastSectorTime", "TelemetryPacket.LastLap"],
+        "assemble native completed sectors; final sector = lap time - prior sectors",
+        "RaceIQ stores completed Assetto Corsa sector array.",
       ),
       "ac-evo": derivedLink(
         "s",
@@ -439,6 +457,13 @@ function addCrossSourceProjections(
       freshness: "continuous",
       description: "ACC normalized packet retains source fuel litres.",
     },
+    ac: {
+      kind: "direct",
+      nativeUnit: "L",
+      sources: ["TelemetryPacket.Fuel"],
+      freshness: "continuous",
+      description: "Assetto Corsa normalized packet retains source fuel litres.",
+    },
     "ac-evo": {
       kind: "direct",
       nativeUnit: "L",
@@ -476,7 +501,7 @@ function addCrossSourceProjections(
       "fraction * 100",
       "RaceIQ converts F1 fuel fraction to percentage.",
     );
-    for (const gameId of ["acc", "ac-evo", "lmu"] as const) {
+    for (const gameId of ["acc", "ac", "ac-evo", "lmu"] as const) {
       fuelPercent.games[gameId] = derivedLink(
         "L",
         ["TelemetryPacket.Fuel", "TelemetryPacket.FuelCapacity"],

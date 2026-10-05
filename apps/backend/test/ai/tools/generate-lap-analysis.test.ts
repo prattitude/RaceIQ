@@ -13,6 +13,7 @@ const validAnalysis = JSON.stringify({
   pace: [],
   handling: [],
   corners: [],
+  braking: [],
   technique: [],
   setup: [],
 });

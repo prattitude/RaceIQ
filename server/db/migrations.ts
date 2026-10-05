@@ -1290,5 +1290,18 @@ export const migrations: { version: number; name: string; sql: string[] }[] = [
       `ALTER TABLE sessions ADD COLUMN capture_format_version INTEGER`,
     ],
   },
+  // v63: Cached Trailbrake cue plans derived from lap metrics + AI analysis.
+  {
+    version: 63,
+    name: "trailbrake cue plans",
+    sql: [
+      `CREATE TABLE IF NOT EXISTS trailbrake_cue_plans (
+         lap_id INTEGER PRIMARY KEY REFERENCES laps(id) ON DELETE CASCADE,
+         plan TEXT NOT NULL,
+         built_at TEXT NOT NULL DEFAULT (datetime('now')),
+         source_analysis_at TEXT
+       )`,
+    ],
+  },
 ];
 

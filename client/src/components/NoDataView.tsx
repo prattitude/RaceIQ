@@ -135,6 +135,7 @@ export function NoDataView() {
               {game.id === "fm-2023" && <ForzaSetupGuide port={port} />}
               {game.id === "f1-2025" && <F1SetupGuide port={port} />}
               {game.id === "acc" && <AccSetupGuide />}
+              {game.id === "ac" && <div className="mt-3 rounded-lg border border-app-border bg-app-surface p-4 text-sm text-app-text-muted"><ol className="list-decimal space-y-2 pl-5"><li>Run Assetto Corsa (original) on this Windows PC (<code className="font-mono">acs.exe</code>).</li><li>Enter an active driving session; telemetry is provided through the game’s local shared-memory interface.</li><li>Keep RaceIQ running on the same PC while driving.</li></ol></div>}
               {game.id === "iracing" && <IRacingSetupGuide />}
               {game.id === "lmu" && <LMUSetupGuide />}
               {game.id === "ac-evo" && <div className="mt-3 rounded-lg border border-app-border bg-app-surface p-4 text-sm text-app-text-muted"><ol className="list-decimal space-y-2 pl-5"><li>Run Assetto Corsa EVO on this Windows PC.</li><li>Enter an active driving session; telemetry is provided through the game’s local shared-memory interface.</li><li>Keep RaceIQ running on the same PC while driving.</li></ol></div>}

@@ -108,8 +108,8 @@ Your response MUST be valid JSON matching this exact schema. Output ONLY the JSO
 CATEGORY GUIDELINES:
 - "pace": 4-6 items covering speed, throttle %, braking efficiency, full-throttle time, gear usage.
 - "handling": 4-6 items covering suspension travel, tire temps, tire wear balance, oversteer/understeer, weight transfer.
-- "corners": Top 3-5 problem corners where time is being lost. Include speed numbers.
-- "braking": Per-corner braking analysis for every corner in the corner data. Use corner label names exactly. "good" = no issues. If detail describes a problem, MUST be "warning" or "critical".
+- "corners": Top 3-5 problem corners where time is being lost. Include speed numbers. Write "fix" as a short speakable approach cue Trailbrake can read aloud.
+- "braking": Per-corner braking notes for problem or notable corners. Use corner label names exactly. Describe brake point relatively (earlier/later/same); do NOT invent absolute meter marks — RaceIQ metrics supply those for Trailbrake.
 - "throttle": Per-corner throttle analysis for every corner. Use corner label names exactly. "good" = clean application. If detail describes a problem, MUST be "warning" or "critical".
 - "coaching": 3-5 actionable driving tips. Reference specific telemetry values.
 - "setup": 0-8 evidence-backed adjustments. Include a component only when tune data or supplied game context explicitly establishes that it is adjustable. If no such setup data is provided, return an empty array.

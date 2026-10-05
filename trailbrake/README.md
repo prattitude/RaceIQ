@@ -24,3 +24,7 @@ dotnet run --project trailbrake/Trailbrake.Companion
 ```
 
 RaceIQ must be running locally (`bun run dev` or the installed app). The companion tries `TRAILBRAKE_RACEIQ_URL`, then port `3117`, then the portless proxy on `127.0.0.1:1355` with Host `raceiq.localhost`.
+
+## Live cues
+
+When a session starts, the companion asks RaceIQ for a reference lap (same game/car/track, preferring an analysed lap), loads its cue plan, and fires approach calls from deterministic brake distances plus AI tip text. Settings → Trailbrake controls HUD, voice, lead time, and reference preference. Portable mirror: `/portable/trailbrake`.

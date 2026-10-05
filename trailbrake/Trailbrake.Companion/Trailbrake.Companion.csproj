@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trailbrake.Core\Trailbrake.Core.csproj" />
+    <PackageReference Include="System.Speech" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

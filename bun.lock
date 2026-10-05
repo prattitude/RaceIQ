@@ -76,8 +76,10 @@
         "@raceiq/analysis-core": "workspace:*",
         "@raceiq/backend-core": "workspace:*",
         "@raceiq/capture-formats": "workspace:*",
+        "@raceiq/game-ac": "workspace:*",
         "@raceiq/game-ac-evo": "workspace:*",
         "@raceiq/game-ac-evo-metadata": "workspace:*",
+        "@raceiq/game-ac-metadata": "workspace:*",
         "@raceiq/game-acc": "workspace:*",
         "@raceiq/game-acc-metadata": "workspace:*",
         "@raceiq/game-catalogs": "workspace:*",
@@ -214,6 +216,15 @@
     "packages/frontend-pure": {
       "name": "@raceiq/frontend-pure",
     },
+    "packages/game-ac": {
+      "name": "@raceiq/game-ac",
+      "dependencies": {
+        "@raceiq/backend-core": "workspace:*",
+        "@raceiq/capture-formats": "workspace:*",
+        "@raceiq/game-ac-metadata": "workspace:*",
+        "@raceiq/shared": "workspace:*",
+      },
+    },
     "packages/game-ac-evo": {
       "name": "@raceiq/game-ac-evo",
       "dependencies": {
@@ -226,6 +237,12 @@
     },
     "packages/game-ac-evo-metadata": {
       "name": "@raceiq/game-ac-evo-metadata",
+      "dependencies": {
+        "@raceiq/shared": "workspace:*",
+      },
+    },
+    "packages/game-ac-metadata": {
+      "name": "@raceiq/game-ac-metadata",
       "dependencies": {
         "@raceiq/shared": "workspace:*",
       },
@@ -249,6 +266,7 @@
       "name": "@raceiq/game-catalogs",
       "dependencies": {
         "@raceiq/game-ac-evo-metadata": "workspace:*",
+        "@raceiq/game-ac-metadata": "workspace:*",
         "@raceiq/game-acc-metadata": "workspace:*",
         "@raceiq/game-f1-2025-metadata": "workspace:*",
         "@raceiq/game-fm-2023-metadata": "workspace:*",
@@ -1111,9 +1129,13 @@
 
     "@raceiq/frontend-pure": ["@raceiq/frontend-pure@workspace:packages/frontend-pure"],
 
+    "@raceiq/game-ac": ["@raceiq/game-ac@workspace:packages/game-ac"],
+
     "@raceiq/game-ac-evo": ["@raceiq/game-ac-evo@workspace:packages/game-ac-evo"],
 
     "@raceiq/game-ac-evo-metadata": ["@raceiq/game-ac-evo-metadata@workspace:packages/game-ac-evo-metadata"],
+
+    "@raceiq/game-ac-metadata": ["@raceiq/game-ac-metadata@workspace:packages/game-ac-metadata"],
 
     "@raceiq/game-acc": ["@raceiq/game-acc@workspace:packages/game-acc"],
 

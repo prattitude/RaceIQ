@@ -184,7 +184,10 @@
     "./test-support/tracks/track-guides": "./test-support/tracks/track-guides.ts",
     "./tracks/calibration": "./tracks/calibration.ts",
     "./tracks/info": "./tracks/info.ts",
-    "./tunes/community-sync": "./tunes/community-sync.ts"
+    "./tunes/community-sync": "./tunes/community-sync.ts",
+    "./db/trailbrake-cue-plan-queries": "./db/trailbrake-cue-plan-queries.ts",
+    "./trailbrake/cue-plan": "./trailbrake/cue-plan.ts",
+    "./trailbrake/reference": "./trailbrake/reference.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",

@@ -1,4 +1,5 @@
 import { AccSharedMemoryReader } from "@raceiq/game-acc/shared-memory";
+import { AcSharedMemoryReader } from "@raceiq/game-ac/shared-memory";
 import { AcEvoSharedMemoryReader } from "@raceiq/game-ac-evo/shared-memory";
 import { IRacingTelemetrySource } from "@raceiq/game-iracing/source";
 import { registerLiveIRacingIdentity } from "@raceiq/game-iracing/identity";
@@ -6,10 +7,12 @@ import { LMUTelemetrySource } from "@raceiq/game-lmu/source";
 import { isGameRunning } from "@raceiq/backend-core/games/registry";
 import {
   getAccReader,
+  getAcReader,
   getAcEvoReader,
   getIracingSource,
   getLmuSource,
   setAccReader,
+  setAcReader,
   setAcEvoReader,
   setIracingSource,
   setLmuSource,
@@ -40,7 +43,7 @@ export function startNativeSourceSupervisor(
     );
   };
 
-  console.log("[Supervisor] Watching for native telemetry games (acc, ac-evo, iracing, lmu) — 2s poll");
+  console.log("[Supervisor] Watching for native telemetry games (acc, ac, ac-evo, iracing, lmu) — 2s poll");
   const pollTimer = setInterval(() => {
     trackStop(superviseSource(
       isGameRunning("acc"),
@@ -48,6 +51,13 @@ export function startNativeSourceSupervisor(
       () => new AccSharedMemoryReader(recordingGameId === "acc"),
       getAccReader,
       setAccReader,
+    ));
+    trackStop(superviseSource(
+      isGameRunning("ac"),
+      "AC",
+      () => new AcSharedMemoryReader(recordingGameId === "ac"),
+      getAcReader,
+      setAcReader,
     ));
     trackStop(superviseSource(
       isGameRunning("ac-evo"),
@@ -82,11 +92,13 @@ export function startNativeSourceSupervisor(
       clearInterval(pollTimer);
       const readers = [
         getAccReader(),
+        getAcReader(),
         getAcEvoReader(),
         getIracingSource(),
         getLmuSource(),
       ];
       setAccReader(null);
+      setAcReader(null);
       setAcEvoReader(null);
       setIracingSource(null);
       setLmuSource(null);

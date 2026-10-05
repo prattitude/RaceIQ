@@ -157,6 +157,7 @@ export async function buildTelemetryCatalog(): Promise<BuiltTelemetryCatalog> {
     "fm-2023": [],
     "f1-2025": [],
     acc: [],
+    ac: [],
     "ac-evo": [],
     iracing: [],
     lmu: [],
@@ -308,6 +309,7 @@ export async function buildTelemetryCatalog(): Promise<BuiltTelemetryCatalog> {
   }
   for (const field of accFields) {
     addExtensionVariable(variables, groups, inventories, "acc", field);
+    addExtensionVariable(variables, groups, inventories, "ac", field);
     addExtensionVariable(variables, groups, inventories, "ac-evo", field);
   }
   for (const field of acEvoFields) {

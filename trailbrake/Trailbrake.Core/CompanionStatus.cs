@@ -9,6 +9,7 @@ public sealed record CompanionStatus(
     string? NpuProvider,
     RaceIqLinkStatus RaceIq,
     ForecastStatus Forecast,
+    CueStatus Cue,
     DateTimeOffset UpdatedAtUtc
 );
 
@@ -29,6 +30,16 @@ public sealed record ForecastStatus(
     string Message
 );
 
+public sealed record CueStatus(
+    string State,
+    string? CornerName,
+    double? MetersToBrake,
+    string? TipText,
+    int? ReferenceLapId,
+    bool HudEnabled,
+    string? Phase
+);
+
 public static class CompanionStatusStore
 {
     public const string ForecastUnavailable = "unavailable";
@@ -42,19 +53,25 @@ public static class CompanionStatusStore
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
-    public static CompanionStatus Build(NpuCapabilityReport npu, RaceIqStatus raceIq)
+    public static CompanionStatus Build(
+        NpuCapabilityReport npu,
+        RaceIqStatus raceIq,
+        CueSnapshot cue,
+        TrailbrakeConfig config)
     {
         var provider = npu.Recommendation.ProviderName
             ?? npu.Providers.FirstOrDefault(item => item.RecommendedForThisPc)?.Name;
-        var forecast = !npu.NpuFeaturesEnabled
-            ? new ForecastStatus(ForecastUnavailable, "NPU features are off. Prepare the recommended provider first.")
+        var forecast = !npu.NpuFeaturesEnabled || !config.Enabled
+            ? new ForecastStatus(ForecastUnavailable, "Trailbrake features are off.")
             : raceIq.Connected && raceIq.SessionId is not null
-                ? new ForecastStatus(ForecastArmed, "NPU ready and RaceIQ session active. Forecast model not loaded yet.")
+                ? new ForecastStatus(ForecastArmed, cue.ReferenceLapId is int id
+                    ? $"Armed with reference lap #{id}."
+                    : "Armed. Looking for a reference lap…")
                 : new ForecastStatus(ForecastWaitingSession, "NPU ready. Waiting for RaceIQ to start a driving session.");
 
         return new CompanionStatus(
             CompanionRunning: true,
-            NpuFeaturesEnabled: npu.NpuFeaturesEnabled,
+            NpuFeaturesEnabled: npu.NpuFeaturesEnabled && config.Enabled,
             NpuProvider: provider,
             RaceIq: new RaceIqLinkStatus(
                 raceIq.Connected,
@@ -67,6 +84,14 @@ public static class CompanionStatusStore
                 raceIq.TrackOrdinal,
                 raceIq.Error),
             Forecast: forecast,
+            Cue: new CueStatus(
+                cue.State,
+                cue.CornerName,
+                cue.MetersToBrake,
+                cue.TipText,
+                cue.ReferenceLapId,
+                config.HudEnabled,
+                cue.Phase),
             UpdatedAtUtc: DateTimeOffset.UtcNow);
     }
 
@@ -76,11 +101,5 @@ public static class CompanionStatusStore
     {
         TrailbrakePaths.EnsureRoot();
         File.WriteAllText(TrailbrakePaths.CompanionStatusPath, ToJson(status));
-    }
-
-    public static CompanionStatus? Read()
-    {
-        if (!File.Exists(TrailbrakePaths.CompanionStatusPath)) return null;
-        return JsonSerializer.Deserialize<CompanionStatus>(File.ReadAllText(TrailbrakePaths.CompanionStatusPath), JsonOptions);
     }
 }

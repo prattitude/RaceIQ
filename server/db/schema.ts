@@ -315,6 +315,16 @@ export const lapAnalyses = sqliteTable(
 	(table) => [unique().on(table.lapId)],
 );
 
+/** Merged Trailbrake approach cues for one lap (metrics + optional AI narrative). */
+export const trailbrakeCuePlans = sqliteTable("trailbrake_cue_plans", {
+	lapId: integer("lap_id")
+		.primaryKey()
+		.references(() => laps.id, { onDelete: "cascade" }),
+	plan: text("plan").notNull(),
+	builtAt: text("built_at").notNull().default(sql`(datetime('now'))`),
+	sourceAnalysisAt: text("source_analysis_at"),
+});
+
 /**
  * Cached racing-line spread trace for a tuning session's clean lap pool. The
  * /line-spread endpoint decodes every clean lap and runs computeLineSpreadTrace

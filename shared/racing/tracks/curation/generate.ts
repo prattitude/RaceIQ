@@ -32,6 +32,7 @@ const NO_CENTERLINE_DIR = null;
 const GAME_DIRS: Record<GameId, string | typeof NO_CENTERLINE_DIR> = {
   "f1-2025": resolve(SHARED_DIR, "tracks", "f1-2025"),
   acc: resolve(gameAssetsDir("acc"), "tracks"),
+  ac: NO_CENTERLINE_DIR,
   "fm-2023": resolve(SHARED_DIR, "tracks", "fm-2023"),
   "ac-evo": resolve(SHARED_DIR, "tracks", "ac-evo"),
   iracing: NO_CENTERLINE_DIR,

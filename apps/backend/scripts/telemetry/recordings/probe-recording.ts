@@ -19,13 +19,13 @@ import type { GameId } from "@raceiq/shared/games/ids";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const recordingGames = {
-  "acc": accRecordingSupport,
+const recordingGames: Partial<Record<GameId, typeof accRecordingSupport>> = {
+  acc: accRecordingSupport,
   "ac-evo": acEvoRecordingSupport,
   "f1-2025": f1RecordingSupport,
   "fm-2023": fmRecordingSupport,
-  "iracing": iracingRecordingSupport,
-  "lmu": lmuRecordingSupport,
+  iracing: iracingRecordingSupport,
+  lmu: lmuRecordingSupport,
 };
 
 const gameId = process.argv[2] as GameId;
@@ -60,5 +60,10 @@ if (!path || !existsSync(path)) {
 console.error(`Probing: ${path}`);
 initGameAdapters(developmentReleaseFeatures);
 initServerGameAdapters(developmentReleaseFeatures);
-const laps = await parseDump(recordingGames[gameId], path);
+const support = recordingGames[gameId];
+if (!support) {
+  console.error(`Recording probe support is not wired for ${gameId} yet.`);
+  process.exit(1);
+}
+const laps = await parseDump(support, path);
 console.log(JSON.stringify(laps, null, 2));

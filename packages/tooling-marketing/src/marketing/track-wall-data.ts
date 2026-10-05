@@ -13,6 +13,7 @@ const GAME_META: Record<GameId, { label: string; tag: string }> = {
   "fm-2023": { label: "Forza Motorsport", tag: "FM" },
   "f1-2025": { label: "F1 2025", tag: "F1 25" },
   acc: { label: "Assetto Corsa Competizione", tag: "ACC" },
+  ac: { label: "Assetto Corsa", tag: "AC" },
   "ac-evo": { label: "Assetto Corsa EVO", tag: "AC EVO" },
   iracing: { label: "iRacing", tag: "iRacing" },
   lmu: { label: "Le Mans Ultimate", tag: "LMU" },

@@ -35,6 +35,13 @@ const TechniqueTip = z.object({
   detail: z.string(),
 });
 
+const BrakingItem = z.object({
+  corner: z.string(),
+  assessment: AssessmentEnum,
+  brakePoint: z.string(),
+  detail: z.string(),
+});
+
 const SetupItem = z.object({
   component: z.string(),
   symptom: z.string(),
@@ -49,6 +56,7 @@ export const AnalystOutputSchema = z.object({
   pace: z.array(MetricItem),
   handling: z.array(MetricItem),
   corners: z.array(CornerIssue),
+  braking: z.array(BrakingItem).default([]),
   technique: z.array(TechniqueTip),
   setup: z.array(SetupItem),
 });
@@ -76,7 +84,10 @@ export function renderAnalystSchemaForPrompt(): string {
     { "label": "Short Metric Name", "value": "specific number/stat", "assessment": "good|warning|critical", "detail": "1 sentence explanation" }
   ],
   "corners": [
-    { "name": "corner/zone name", "issue": "what's wrong", "fix": "specific actionable fix", "severity": "minor|moderate|major" }
+    { "name": "corner/zone name", "issue": "what's wrong", "fix": "short speakable approach fix", "severity": "minor|moderate|major" }
+  ],
+  "braking": [
+    { "corner": "corner name matching corner data labels", "assessment": "good|warning|critical", "brakePoint": "relative description e.g. earlier than usual", "detail": "1 sentence; do not invent absolute meter marks" }
   ],
   "technique": [
     { "tip": "short imperative title", "detail": "explanation referencing specific data" }
@@ -88,15 +99,12 @@ export function renderAnalystSchemaForPrompt(): string {
 }
 
 function normalizeAnalystInput(raw: unknown): unknown {
-  if (
-    raw &&
-    typeof raw === "object" &&
-    !Array.isArray(raw) &&
-    !Object.prototype.hasOwnProperty.call(raw, "setup")
-  ) {
-    return { ...raw, setup: [] };
-  }
-  return raw;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return raw;
+  const obj = raw as Record<string, unknown>;
+  const next = { ...obj };
+  if (!Object.prototype.hasOwnProperty.call(next, "setup")) next.setup = [];
+  if (!Object.prototype.hasOwnProperty.call(next, "braking")) next.braking = [];
+  return next;
 }
 
 /**

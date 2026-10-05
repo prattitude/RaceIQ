@@ -3,6 +3,7 @@ import { Hono } from "hono";
 
 import { IdParamSchema } from "@raceiq/shared/platform/http/route-schemas";
 import { deleteAnalysis } from "@raceiq/backend-core/db/analysis-queries";
+import { clearTrailbrakeCuePlan } from "@raceiq/backend-core/trailbrake/cue-plan";
 import { generateLapAnalysis } from "../../ai/generate-lap-analysis";
 import { toClientAiError } from "@raceiq/backend-core/ai/provider-error";
 import {
@@ -125,6 +126,7 @@ export const analysisRoutes = new Hono()
       const { id } = c.req.valid("param");
       try {
         await deleteAnalysis(id);
+        await clearTrailbrakeCuePlan(id);
       } catch (error) {
         console.error("[AI] Failed to clear analysis:", error);
       }

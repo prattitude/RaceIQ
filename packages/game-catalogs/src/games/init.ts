@@ -3,6 +3,7 @@ import { releaseFeatureFlags, type ReleaseFeatureFlags } from "@raceiq/shared/pl
 import { forzaAdapter } from "@raceiq/game-fm-2023-metadata/index";
 import { f1Adapter } from "@raceiq/game-f1-2025-metadata/index";
 import { accAdapter } from "@raceiq/game-acc-metadata/index";
+import { acAdapter } from "@raceiq/game-ac-metadata/index";
 import { acEvoAdapter } from "@raceiq/game-ac-evo-metadata/index";
 import { iracingAdapter } from "@raceiq/game-iracing-metadata/index";
 import { lmuAdapter } from "@raceiq/game-lmu-metadata/index";
@@ -13,7 +14,7 @@ export function gameAdaptersForFeatures(
     RACEIQ_FEATURE_IRACING_ADAPTER: import.meta.env.RACEIQ_FEATURE_IRACING_ADAPTER,
   }),
 ) {
-  const adapters = [forzaAdapter, f1Adapter, accAdapter, acEvoAdapter];
+  const adapters = [forzaAdapter, f1Adapter, accAdapter, acAdapter, acEvoAdapter];
   if (flags.iracingAdapter) adapters.push(iracingAdapter);
   adapters.push(lmuAdapter);
   return adapters;

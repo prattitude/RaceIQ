@@ -59,6 +59,21 @@ const AppSettingsSchema = z.object({
   // sync job (server/tunes/community-sync.ts) to skip unchanged manifests.
   communityTunesVersion: z.string().nullable().default(null),
   communityTunesSyncedAt: z.string().nullable().default(null),
+  // Trailbrake companion (NPU-gated approach cues + HUD).
+  trailbrakeEnabled: z.boolean().default(true),
+  trailbrakeHudEnabled: z.boolean().default(true),
+  trailbrakeVoiceEnabled: z.boolean().default(true),
+  trailbrakePortableMirror: z.boolean().default(true),
+  trailbrakeCueLeadMs: z.number().int().min(200).max(5000).default(1200),
+  trailbrakeHudOpacity: z.number().min(0.35).max(1).default(0.85),
+  trailbrakeHudScale: z.number().min(0.75).max(1.5).default(1),
+  trailbrakeHudPosition: z.enum(["bottom-center", "top-center"]).default("bottom-center"),
+  trailbrakeReferencePreference: z.enum(["analysed-fastest", "fastest"]).default("analysed-fastest"),
+  trailbrakeSoundEnabled: z.boolean().default(true),
+  trailbrakeSoundVolume: z.number().min(0).max(1).default(0.7),
+  trailbrakeSoundPack: z.enum(["click", "hat", "pulse"]).default("click"),
+  trailbrakeModulationEnabled: z.boolean().default(true),
+  trailbrakeCueIntensity: z.enum(["calm", "normal", "urgent"]).default("normal"),
 });
 
 export type AppSettings = z.infer<typeof AppSettingsSchema>;

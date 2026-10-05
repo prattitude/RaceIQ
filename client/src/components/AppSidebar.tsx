@@ -137,6 +137,7 @@ const GAME_LOGO_SRC: Readonly<Partial<Record<string, string>>> = {
   "fm-2023": "/forza-logo.svg",
   "f1-2025": "/f1-logo.svg",
   acc: "/acc-logo.svg",
+  ac: "/acc-logo.svg",
   "ac-evo": "/acevo-logo.svg",
   lmu: "/lmu-logo.svg",
 };

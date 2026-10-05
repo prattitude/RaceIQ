@@ -163,7 +163,7 @@ export async function listCaptureMigrationCandidates(): Promise<{ rawFile: strin
     .where(and(isNull(sessions.captureFormatVersion), sql`${sessions.rawFile} IS NOT NULL`))
     .orderBy(desc(sessions.createdAt), desc(sessions.id))
     .all();
-  const supported = new Set<GameId>(["fm-2023", "f1-2025", "acc", "ac-evo", "iracing", "lmu"]);
+  const supported = new Set<GameId>(["fm-2023", "f1-2025", "acc", "ac", "ac-evo", "iracing", "lmu"]);
   const paths = new Set<string>();
   for (const candidate of candidates) {
     if (!candidate.rawFile || !isOwnedSessionRawFile(candidate.rawFile)) continue;

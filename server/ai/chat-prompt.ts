@@ -100,12 +100,16 @@ export function buildChatSystemPrompt(
       if (parsed.corners?.length) {
         analysisContext += `Problem corners: ${parsed.corners.map((c: any) => `${c.name} (${c.severity}): ${c.issue}`).join("; ")}\n`;
       }
+      if (parsed.braking?.length) {
+        analysisContext += `Braking notes: ${parsed.braking.map((b: { corner: string; detail: string }) => `${b.corner}: ${b.detail}`).join("; ")}\n`;
+      }
       if (parsed.technique?.length) {
         analysisContext += `Technique tips: ${parsed.technique.map((t: any) => t.tip).join("; ")}\n`;
       }
       if (parsed.setup?.length) {
         analysisContext += `Setup changes: ${parsed.setup.map((s: any) => `${s.change}: ${s.fix}`).join("; ")}\n`;
       }
+      analysisContext += `Trailbrake: approach cue plans for this lap are available via the get_trailbrake_cue_plan tool when the driver asks about brake points or approach calls.\n`;
     } catch {
       // If analysis JSON is invalid, include raw
       analysisContext = `\n--- PREVIOUS ANALYSIS ---\n${analysisJson}\n`;

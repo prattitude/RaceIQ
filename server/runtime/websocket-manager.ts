@@ -85,6 +85,15 @@ export class WebSocketManager {
   private lastFrame: LiveProjection["frame"] | null = null;
   private lastFrameJson: string | null = null;
   private lastDevPacketJson: string | null = null;
+  /** Compact cue sample for Trailbrake companion (latest packet only). */
+  private lastTrailbrakeSample: {
+    distanceTraveled: number;
+    speedMps: number;
+    brake: number;
+    lapNumber: number;
+    currentLapTime: number;
+    updatedAtUtc: string;
+  } | null = null;
   private readonly allowDevTelemetry = IS_DEV || IS_E2E;
   /** Injected getter for session laps — avoids circular import with pipeline */
   private _getSessionLaps: (() => readonly LapMeta[]) | null = null;
@@ -327,6 +336,18 @@ export class WebSocketManager {
 
   flushLatest(): void { this._pushToClients(); }
 
+  /** Latest cue-relevant live fields for the Trailbrake companion. */
+  getTrailbrakeLiveSample(): {
+    distanceTraveled: number;
+    speedMps: number;
+    brake: number;
+    lapNumber: number;
+    currentLapTime: number;
+    updatedAtUtc: string;
+  } | null {
+    return this.lastTrailbrakeSample;
+  }
+
   // Latest state — written by packet handler, read by broadcast timer
   private _broadcastTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -341,6 +362,14 @@ export class WebSocketManager {
     _liveIssues?: TuneIssue[],
   ): void {
     this._packetCount++;
+    this.lastTrailbrakeSample = {
+      distanceTraveled: packet.DistanceTraveled,
+      speedMps: packet.Speed,
+      brake: packet.Brake / 255,
+      lapNumber: packet.LapNumber,
+      currentLapTime: packet.CurrentLap,
+      updatedAtUtc: new Date().toISOString(),
+    };
 
     // Sample telemetry history at ~10Hz
     this.gripSampleCounter++;

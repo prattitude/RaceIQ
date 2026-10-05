@@ -46,6 +46,20 @@ export interface DisplaySettings {
   launchOnLogin?: boolean;
   /** UI + AI output language (ISO code, e.g. "en", "de"). */
   language?: string;
+  trailbrakeEnabled?: boolean;
+  trailbrakeHudEnabled?: boolean;
+  trailbrakeVoiceEnabled?: boolean;
+  trailbrakePortableMirror?: boolean;
+  trailbrakeCueLeadMs?: number;
+  trailbrakeHudOpacity?: number;
+  trailbrakeHudScale?: number;
+  trailbrakeHudPosition?: "bottom-center" | "top-center";
+  trailbrakeReferencePreference?: "analysed-fastest" | "fastest";
+  trailbrakeSoundEnabled?: boolean;
+  trailbrakeSoundVolume?: number;
+  trailbrakeSoundPack?: "click" | "hat" | "pulse";
+  trailbrakeModulationEnabled?: boolean;
+  trailbrakeCueIntensity?: "calm" | "normal" | "urgent";
   /** True when running as compiled exe, false in dev (bun run dev) */
   isCompiled?: boolean;
 }

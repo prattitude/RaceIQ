@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameidRouteImport } from './routes/$gameid'
+import { Route as AcRouteImport } from './routes/ac'
 import { Route as AcEvoRouteImport } from './routes/ac-evo'
 import { Route as AccRouteImport } from './routes/acc'
 import { Route as DevRouteImport } from './routes/dev'
@@ -29,6 +30,7 @@ import { Route as GameidSessionsRouteImport } from './routes/$gameid/sessions'
 import { Route as GameidTracksRouteImport } from './routes/$gameid/tracks'
 import { Route as AcEvoIndexRouteImport } from './routes/ac-evo/index'
 import { Route as AcEvoSetupsRouteImport } from './routes/ac-evo/setups'
+import { Route as AcIndexRouteImport } from './routes/ac/index'
 import { Route as AccIndexRouteImport } from './routes/acc/index'
 import { Route as AccSetupsRouteImport } from './routes/acc/setups'
 import { Route as F125IndexRouteImport } from './routes/f125/index'
@@ -42,6 +44,7 @@ import { Route as LmuIndexRouteImport } from './routes/lmu/index'
 import { Route as PortableIndexRouteImport } from './routes/portable.index'
 import { Route as PortableCombo1RouteImport } from './routes/portable.combo-1'
 import { Route as PortableCombo2RouteImport } from './routes/portable.combo-2'
+import { Route as PortableTrailbrakeRouteImport } from './routes/portable.trailbrake'
 import { Route as GameidExperimentsIndexRouteImport } from './routes/$gameid/experiments.index'
 import { Route as GameidExperimentsExperimentIdRouteImport } from './routes/$gameid/experiments.$experimentId'
 import { Route as GameidSessionsIndexRouteImport } from './routes/$gameid/sessions.index'
@@ -76,6 +79,11 @@ const IndexRoute = IndexRouteImport.update({
 const GameidRoute = GameidRouteImport.update({
   id: '/$gameid',
   path: '/$gameid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcRoute = AcRouteImport.update({
+  id: '/ac',
+  path: '/ac',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcEvoRoute = AcEvoRouteImport.update({
@@ -168,6 +176,11 @@ const AcEvoSetupsRoute = AcEvoSetupsRouteImport.update({
   path: '/setups',
   getParentRoute: () => AcEvoRoute,
 } as any)
+const AcIndexRoute = AcIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcRoute,
+} as any)
 const AccIndexRoute = AccIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -231,6 +244,11 @@ const PortableCombo1Route = PortableCombo1RouteImport.update({
 const PortableCombo2Route = PortableCombo2RouteImport.update({
   id: '/portable/combo-2',
   path: '/portable/combo-2',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortableTrailbrakeRoute = PortableTrailbrakeRouteImport.update({
+  id: '/portable/trailbrake',
+  path: '/portable/trailbrake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GameidExperimentsIndexRoute = GameidExperimentsIndexRouteImport.update({
@@ -368,6 +386,7 @@ const GameidSessionsSessionIdReplayLapIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$gameid': typeof GameidRouteWithChildren
+  '/ac': typeof AcRouteWithChildren
   '/ac-evo': typeof AcEvoRouteWithChildren
   '/acc': typeof AccRouteWithChildren
   '/dev': typeof DevRoute
@@ -392,7 +411,9 @@ export interface FileRoutesByFullPath {
   '/live/pit': typeof LivePitRoute
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
+  '/portable/trailbrake': typeof PortableTrailbrakeRoute
   '/ac-evo/': typeof AcEvoIndexRoute
+  '/ac/': typeof AcIndexRoute
   '/acc/': typeof AccIndexRoute
   '/f125/': typeof F125IndexRoute
   '/fm23/': typeof Fm23IndexRoute
@@ -438,7 +459,9 @@ export interface FileRoutesByTo {
   '/live/pit': typeof LivePitRoute
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
+  '/portable/trailbrake': typeof PortableTrailbrakeRoute
   '/ac-evo': typeof AcEvoIndexRoute
+  '/ac': typeof AcIndexRoute
   '/acc': typeof AccIndexRoute
   '/f125': typeof F125IndexRoute
   '/fm23': typeof Fm23IndexRoute
@@ -475,6 +498,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$gameid': typeof GameidRouteWithChildren
+  '/ac': typeof AcRouteWithChildren
   '/ac-evo': typeof AcEvoRouteWithChildren
   '/acc': typeof AccRouteWithChildren
   '/dev': typeof DevRoute
@@ -499,7 +523,9 @@ export interface FileRoutesById {
   '/live/pit': typeof LivePitRoute
   '/portable/combo-1': typeof PortableCombo1Route
   '/portable/combo-2': typeof PortableCombo2Route
+  '/portable/trailbrake': typeof PortableTrailbrakeRoute
   '/ac-evo/': typeof AcEvoIndexRoute
+  '/ac/': typeof AcIndexRoute
   '/acc/': typeof AccIndexRoute
   '/f125/': typeof F125IndexRoute
   '/fm23/': typeof Fm23IndexRoute
@@ -537,6 +563,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$gameid'
+    | '/ac'
     | '/ac-evo'
     | '/acc'
     | '/dev'
@@ -561,7 +588,9 @@ export interface FileRouteTypes {
     | '/live/pit'
     | '/portable/combo-1'
     | '/portable/combo-2'
+    | '/portable/trailbrake'
     | '/ac-evo/'
+    | '/ac/'
     | '/acc/'
     | '/f125/'
     | '/fm23/'
@@ -607,7 +636,9 @@ export interface FileRouteTypes {
     | '/live/pit'
     | '/portable/combo-1'
     | '/portable/combo-2'
+    | '/portable/trailbrake'
     | '/ac-evo'
+    | '/ac'
     | '/acc'
     | '/f125'
     | '/fm23'
@@ -643,6 +674,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$gameid'
+    | '/ac'
     | '/ac-evo'
     | '/acc'
     | '/dev'
@@ -667,7 +699,9 @@ export interface FileRouteTypes {
     | '/live/pit'
     | '/portable/combo-1'
     | '/portable/combo-2'
+    | '/portable/trailbrake'
     | '/ac-evo/'
+    | '/ac/'
     | '/acc/'
     | '/f125/'
     | '/fm23/'
@@ -704,6 +738,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GameidRoute: typeof GameidRouteWithChildren
+  AcRoute: typeof AcRouteWithChildren
   AcEvoRoute: typeof AcEvoRouteWithChildren
   AccRoute: typeof AccRouteWithChildren
   DevRoute: typeof DevRoute
@@ -714,6 +749,7 @@ export interface RootRouteChildren {
   LmuRoute: typeof LmuRouteWithChildren
   PortableCombo1Route: typeof PortableCombo1Route
   PortableCombo2Route: typeof PortableCombo2Route
+  PortableTrailbrakeRoute: typeof PortableTrailbrakeRoute
   PortableIndexRoute: typeof PortableIndexRoute
 }
 
@@ -731,6 +767,13 @@ declare module '@tanstack/react-router' {
       path: '/$gameid'
       fullPath: '/$gameid'
       preLoaderRoute: typeof GameidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ac': {
+      id: '/ac'
+      path: '/ac'
+      fullPath: '/ac'
+      preLoaderRoute: typeof AcRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ac-evo': {
@@ -859,6 +902,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcEvoSetupsRouteImport
       parentRoute: typeof AcEvoRoute
     }
+    '/ac/': {
+      id: '/ac/'
+      path: '/'
+      fullPath: '/ac/'
+      preLoaderRoute: typeof AcIndexRouteImport
+      parentRoute: typeof AcRoute
+    }
     '/acc/': {
       id: '/acc/'
       path: '/'
@@ -948,6 +998,13 @@ declare module '@tanstack/react-router' {
       path: '/portable/combo-2'
       fullPath: '/portable/combo-2'
       preLoaderRoute: typeof PortableCombo2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portable/trailbrake': {
+      id: '/portable/trailbrake'
+      path: '/portable/trailbrake'
+      fullPath: '/portable/trailbrake'
+      preLoaderRoute: typeof PortableTrailbrakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$gameid/experiments/': {
@@ -1204,6 +1261,16 @@ const GameidRouteChildren: GameidRouteChildren = {
 const GameidRouteWithChildren =
   GameidRoute._addFileChildren(GameidRouteChildren)
 
+interface AcRouteChildren {
+  AcIndexRoute: typeof AcIndexRoute
+}
+
+const AcRouteChildren: AcRouteChildren = {
+  AcIndexRoute: AcIndexRoute,
+}
+
+const AcRouteWithChildren = AcRoute._addFileChildren(AcRouteChildren)
+
 interface AcEvoSetupsRouteChildren {
   AcEvoSetupsImportRoute: typeof AcEvoSetupsImportRoute
   AcEvoSetupsNewRoute: typeof AcEvoSetupsNewRoute
@@ -1368,6 +1435,7 @@ const LmuRouteWithChildren = LmuRoute._addFileChildren(LmuRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GameidRoute: GameidRouteWithChildren,
+  AcRoute: AcRouteWithChildren,
   AcEvoRoute: AcEvoRouteWithChildren,
   AccRoute: AccRouteWithChildren,
   DevRoute: DevRoute,
@@ -1378,6 +1446,7 @@ const rootRouteChildren: RootRouteChildren = {
   LmuRoute: LmuRouteWithChildren,
   PortableCombo1Route: PortableCombo1Route,
   PortableCombo2Route: PortableCombo2Route,
+  PortableTrailbrakeRoute: PortableTrailbrakeRoute,
   PortableIndexRoute: PortableIndexRoute,
 }
 export const routeTree = rootRouteImport

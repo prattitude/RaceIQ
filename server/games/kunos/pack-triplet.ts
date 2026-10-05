@@ -7,6 +7,7 @@
  */
 
 export const ACC_PACKED_MAGIC  = 0x50434341; // "ACCP" as uint32 LE
+export const AC_PACKED_MAGIC   = 0x504F4341; // "ACOP" as uint32 LE (Assetto Corsa original)
 export const ACEVO_PACKED_MAGIC = 0x50454341; // "ACEP" as uint32 LE
 
 export function packTriplet(

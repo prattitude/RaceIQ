@@ -23,6 +23,7 @@ const GAME_LABELS: Record<GameId, string> = {
   "fm-2023": "Forza Motorsport (fm-2023)",
   "f1-2025": "F1 25 (f1-2025)",
   acc: "ACC (acc)",
+  ac: "Assetto Corsa (ac)",
   "ac-evo": "AC Evo (ac-evo)",
   iracing: "iRacing (iracing)",
   lmu: "Le Mans Ultimate (lmu)",

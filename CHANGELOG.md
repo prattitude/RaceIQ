@@ -2,7 +2,11 @@
 
 ### Features
 
+- Capture live Assetto Corsa (original) telemetry over shared memory on Windows.
 - See Trailbrake companion status in Settings, including NPU readiness and the live RaceIQ link.
+- Get Trailbrake approach cues from a correlated reference lap and its AI analysis, with a click-through HUD, optional voice calls, and Settings controls for HUD, voice, and reference preference.
+- Hear Trailbrake live modulation cues (approach, brake-on, trail, release, exit) with click/hat/pulse sound packs, volume, and intensity controls in Settings.
+- Open a sparse Trailbrake cue mirror on `/portable/trailbrake` for a second monitor.
 
 ### Fixes
 

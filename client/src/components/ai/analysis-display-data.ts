@@ -15,6 +15,12 @@ const CornerItem = z.object({
   severity: z.enum(["minor", "moderate", "major"]),
 });
 const TechniqueItem = z.object({ tip: z.string(), detail: z.string() });
+const BrakingItem = z.object({
+  corner: z.string(),
+  assessment: Assessment,
+  brakePoint: z.string(),
+  detail: z.string(),
+});
 const SetupItem = z.object({
   component: z.string(),
   symptom: z.string(),
@@ -29,6 +35,7 @@ const LapAnalysisForDisplay = z.object({
   pace: z.array(MetricItem),
   handling: z.array(MetricItem),
   corners: z.array(CornerItem),
+  braking: z.array(BrakingItem).optional(),
   technique: z.array(TechniqueItem),
   setup: z.array(SetupItem).optional(),
 });
@@ -52,7 +59,7 @@ export function parseLapAnalysisForDisplay(text: string): AnalysisData | null {
     pace: parsed.data.pace,
     handling: parsed.data.handling,
     corners: parsed.data.corners,
-    braking: [],
+    braking: parsed.data.braking ?? [],
     throttle: [],
     coaching: parsed.data.technique,
     setup: parsed.data.setup ?? [],

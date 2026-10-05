@@ -5,23 +5,33 @@ import type { ReactNode } from "react";
 import { m } from "@/paraglide/messages";
 import { ComboDash } from "../components/dashes/ComboDash";
 import { ComboDash2 } from "../components/dashes/ComboDash2";
+import { TrailbrakeDash } from "../components/dashes/TrailbrakeDash";
 import { fakeF1SemanticFixture, fakePit, fakeSectors, generateFakeSessionLaps } from "../stories/fakeData";
 
 const PREVIEW_LAPS = generateFakeSessionLaps(10);
 
 interface DashMeta {
-  slug: "combo-1" | "combo-2";
-  href: "/portable/combo-1" | "/portable/combo-2";
+  slug: "combo-1" | "combo-2" | "trailbrake";
+  href: "/portable/combo-1" | "/portable/combo-2" | "/portable/trailbrake";
 }
 
 // Title/description resolve at render time (localized) — see dashTitle/dashDesc.
 const DASH_META: DashMeta[] = [
   { slug: "combo-1", href: "/portable/combo-1" },
   { slug: "combo-2", href: "/portable/combo-2" },
+  { slug: "trailbrake", href: "/portable/trailbrake" },
 ];
 
-const dashTitle = (slug: DashMeta["slug"]) => (slug === "combo-1" ? m.dash_race_hud() : m.dash_lap_pace());
-const dashDesc = (slug: DashMeta["slug"]) => (slug === "combo-1" ? m.dash_combo1_desc() : m.dash_combo2_desc());
+const dashTitle = (slug: DashMeta["slug"]) => {
+  if (slug === "combo-1") return m.dash_race_hud();
+  if (slug === "combo-2") return m.dash_lap_pace();
+  return m.dash_trailbrake();
+};
+const dashDesc = (slug: DashMeta["slug"]) => {
+  if (slug === "combo-1") return m.dash_combo1_desc();
+  if (slug === "combo-2") return m.dash_combo2_desc();
+  return m.dash_trailbrake_desc();
+};
 
 function useNetworkInfo() {
   return useQuery<{ lanIps: string[]; port: number }>({
@@ -47,6 +57,15 @@ function DashCatalogue() {
   const previewFor = (slug: DashMeta["slug"]): ReactNode => {
     if (slug === "combo-1") {
       return <ComboDash view={fakeF1SemanticFixture.view} sectors={fakeSectors} pit={fakePit} unitSystem="metric" />;
+    }
+    if (slug === "trailbrake") {
+      return (
+        <TrailbrakeDash
+          companionRunning
+          npuReady
+          cue={{ state: "calling", cornerName: "T3", metersToBrake: 85, tipText: "Brake earlier and trail off to apex.", referenceLapId: 12 }}
+        />
+      );
     }
     return <ComboDash2 view={fakeF1SemanticFixture.view} sessionLaps={PREVIEW_LAPS} />;
   };

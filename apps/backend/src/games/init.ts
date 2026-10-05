@@ -3,6 +3,7 @@ import { registerGame } from "@raceiq/shared/games/registry";
 import { forzaServerAdapter } from "@raceiq/game-fm-2023";
 import { f1ServerAdapter } from "@raceiq/game-f1-2025";
 import { accServerAdapter } from "@raceiq/game-acc";
+import { acServerAdapter } from "@raceiq/game-ac";
 import { acEvoServerAdapter } from "@raceiq/game-ac-evo";
 import { iracingServerAdapter } from "@raceiq/game-iracing";
 import { lmuServerAdapter } from "@raceiq/game-lmu";
@@ -14,7 +15,7 @@ export function nativeTelemetryGameIds(
     RACEIQ_FEATURE_IRACING_ADAPTER: process.env.RACEIQ_FEATURE_IRACING_ADAPTER,
   }),
 ) {
-  const gameIds = ["acc", "ac-evo"] as const;
+  const gameIds = ["acc", "ac", "ac-evo"] as const;
   return flags.iracingAdapter
     ? [...gameIds, "iracing", "lmu"] as const
     : [...gameIds, "lmu"] as const;
@@ -30,6 +31,7 @@ export function serverGameAdaptersForFeatures(
     f1ServerAdapter,
     forzaServerAdapter,
     accServerAdapter,
+    acServerAdapter,
     acEvoServerAdapter,
   ];
   if (flags.iracingAdapter) adapters.push(iracingServerAdapter);

@@ -479,17 +479,17 @@ function packetNativeMetadata(
   if (gameId === "f1-2025" && key === "Speed") {
     return { nativeUnit: "km/h", normalization: "kilometres per hour / 3.6" };
   }
-  if ((gameId === "acc" || gameId === "ac-evo") && key === "Speed") {
+  if ((gameId === "acc" || gameId === "ac" || gameId === "ac-evo") && key === "Speed") {
     return { nativeUnit: "km/h", normalization: "kilometres per hour / 3.6" };
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac" || gameId === "ac-evo") &&
     ["BestLap", "LastLap", "CurrentLap"].includes(key)
   ) {
     return { nativeUnit: "ms", normalization: "milliseconds / 1000" };
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac" || gameId === "ac-evo") &&
     ["Accel", "Brake", "Steer"].includes(key)
   ) {
     return {
@@ -623,7 +623,7 @@ function packetGameLink(
     );
   }
   if (
-    (gameId === "acc" || gameId === "ac-evo") &&
+    (gameId === "acc" || gameId === "ac" || gameId === "ac-evo") &&
     set.key === "CurrentRaceTime"
   ) {
     return unavailable(

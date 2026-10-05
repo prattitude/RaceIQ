@@ -3,6 +3,7 @@ import type { GameId } from "@raceiq/shared/games/ids";
 import { getLapById } from "@raceiq/backend-core/db/lap-read-queries";
 import { getCorners } from "@raceiq/backend-core/db/track-queries";
 import { getAnalysis, saveAnalysis } from "@raceiq/backend-core/db/analysis-queries";
+import { buildAndSaveTrailbrakeCuePlan } from "@raceiq/backend-core/trailbrake/cue-plan";
 import { getTuneById as getDbTune } from "@raceiq/backend-core/db/tune-queries";
 import { detectCorners, type Corner } from "@raceiq/backend-core/lap-analysis/corners";
 import { getOrComputeLapInsights } from "@raceiq/backend-core/lap-analysis/metrics-store";
@@ -333,6 +334,11 @@ export async function generateLapAnalysis(
       model,
     };
     await writeAnalysis(lapId, text, usage);
+    try {
+      await buildAndSaveTrailbrakeCuePlan(lapId);
+    } catch (error) {
+      console.error("[Trailbrake] Failed to rebuild cue plan after analysis:", error);
+    }
     logLlmEvent("llm-response", { ...diagnostic, response: result });
     return { analysis: text, cached: false, usage, cornerFracs, hasTune };
   } catch (err) {

@@ -79,7 +79,7 @@ export function enrichCatalogContracts(
 
     for (const gameId of GAME_IDS) {
       const mapping = variable.games[gameId];
-      if (mapping.kind === "unavailable") continue;
+      if (!mapping || mapping.kind === "unavailable") continue;
       const sources = Array.isArray(mapping.sources)
         ? mapping.sources
         : Object.values(mapping.sources).flat();

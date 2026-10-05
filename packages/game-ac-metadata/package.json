@@ -1,0 +1,11 @@
+{
+  "name": "@raceiq/game-ac-metadata",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./index": "./src/index.ts",
+    "./identity": "./src/identity.ts"
+  },
+  "dependencies": { "@raceiq/shared": "workspace:*" },
+  "scripts": {"typecheck":"bunx tsc --project tsconfig.json --noEmit"}
+}
